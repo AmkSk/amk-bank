@@ -9,7 +9,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { Button, Provider as PaperProvider, Text } from "react-native-paper";
 
-import { theme } from "./themes/Theme";
+import { theme } from "./src/themes/Theme";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
