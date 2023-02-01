@@ -14,6 +14,7 @@ import IntroScreen from './src/screens/IntroScreen'
 import LoginScreen from './src/screens/LoginScreen'
 import { theme } from './src/themes/Theme'
 import { RootStackParamList } from './src/navigation/NavigationTypes'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 import * as SplashScreen from 'expo-splash-screen'
 import { useCallback } from 'react'
 import { View } from 'react-native'
@@ -42,14 +43,16 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <PaperProvider theme={theme}>
-        <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      <SafeAreaProvider>
+        <PaperProvider theme={theme}>
+          <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
           <RootStack.Navigator>
-            <RootStack.Screen name={Routes.IntroScreen} component={IntroScreen} />
+            <RootStack.Screen name={Routes.IntroScreen} component={IntroScreen} options={{ headerShown: false }} />
             <RootStack.Screen name={Routes.LoginScreen} component={LoginScreen} />
           </RootStack.Navigator>
         </View>
-      </PaperProvider>
+        </PaperProvider>
+      </SafeAreaProvider>
     </NavigationContainer>
   )
 }
