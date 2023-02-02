@@ -30,7 +30,7 @@ export const fontConfig = {
     fontFamily: 'Poppins_400Regular',
   },
   bodyMedium: {
-    fontFamily: 'Poppins_500Medium',
+    fontFamily: 'Poppins_400Regular',
   },
   bodySmall: {
     fontFamily: 'Poppins_400Regular',

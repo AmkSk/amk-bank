@@ -18,6 +18,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import * as SplashScreen from 'expo-splash-screen'
 import { useCallback, useState } from 'react'
 import { View } from 'react-native'
+import WelcomeScreen from './src/screens/WelcomeScreen'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { USER_PREFERENCES } from './src/Constants'
 
@@ -54,10 +55,11 @@ export default function App() {
       <SafeAreaProvider>
         <PaperProvider theme={theme}>
           <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-            <RootStack.Navigator>
+            <RootStack.Navigator screenOptions={{ animation: 'slide_from_right', animationDuration: 100 }}>
               {shouldHideIntro ? undefined : (
                 <RootStack.Screen name={Routes.IntroScreen} component={IntroScreen} options={{ headerShown: false }} />
               )}
+              <RootStack.Screen name={Routes.WelcomeScreen} component={WelcomeScreen} options={{ title: '' }} />
               <RootStack.Screen name={Routes.LoginScreen} component={LoginScreen} />
             </RootStack.Navigator>
           </View>

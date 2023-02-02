@@ -40,7 +40,7 @@ export default function IntroScreen({ navigation }: NativeStackScreenProps<RootS
 
     if (nextPage >= INTRO_PAGES.length) {
       AsyncStorage.setItem(USER_PREFERENCES.userFinishedIntro, Boolean(true).toString())
-      navigation.replace(Routes.LoginScreen)
+      navigation.replace(Routes.WelcomeScreen)
     } else {
       pagerRef.current?.setPage(nextPage)
     }
@@ -88,6 +88,7 @@ function IndicatorView({ activePage, pagesCount }: IndicatorProps): JSX.Element 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   pagerView: {
     flex: 1,
