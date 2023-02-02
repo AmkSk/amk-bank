@@ -7,6 +7,8 @@ import { Routes } from '../navigation/Routes'
 import PagerView from 'react-native-pager-view'
 import { useRef, useState } from 'react'
 import { theme } from '../themes/Theme'
+import { USER_PREFERENCES } from '../Constants'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 type Page = {
   imageSource: ImageSourcePropType
@@ -37,7 +39,8 @@ export default function IntroScreen({ navigation }: NativeStackScreenProps<RootS
     const nextPage = activePage + 1
 
     if (nextPage >= INTRO_PAGES.length) {
-      navigation.navigate(Routes.LoginScreen)
+      AsyncStorage.setItem(USER_PREFERENCES.userFinishedIntro, Boolean(true).toString())
+      navigation.replace(Routes.LoginScreen)
     } else {
       pagerRef.current?.setPage(nextPage)
     }
