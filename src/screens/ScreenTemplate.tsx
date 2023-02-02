@@ -1,8 +1,9 @@
+import React from 'react'
 import { SafeAreaView, StyleSheet, View, ViewStyle } from 'react-native'
 
 interface Props {
   style?: ViewStyle
-  children: JSX.Element[]
+  children: React.ReactNode[] | React.ReactNode
 }
 
 /**
