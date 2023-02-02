@@ -9,6 +9,7 @@ import { useRef, useState } from 'react'
 import { theme } from '../themes/Theme'
 import { USER_PREFERENCES } from '../Constants'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Strings } from '../i18n/Strings'
 
 type Page = {
   imageSource: ImageSourcePropType
@@ -19,15 +20,15 @@ const IMAGES_URI = '../../assets/images'
 const INTRO_PAGES: Page[] = [
   {
     imageSource: require(`${IMAGES_URI}/onboarding_1.png`),
-    text: 'Trusted by millions of people, part of one part',
+    text: Strings.onboarding_page_1,
   },
   {
     imageSource: require(`${IMAGES_URI}/onboarding_2.png`),
-    text: 'Spend money abroad, and track your expense',
+    text: Strings.onboarding_page_2,
   },
   {
     imageSource: require(`${IMAGES_URI}/onboarding_3.png`),
-    text: 'Receive Money from anywhere in the world',
+    text: Strings.onboarding_page_3,
   },
 ]
 
@@ -66,7 +67,7 @@ export default function IntroScreen({ navigation }: NativeStackScreenProps<RootS
       <IndicatorView activePage={activePage} pagesCount={INTRO_PAGES.length} />
 
       <Button style={styles.nextButton} mode='contained' onPress={handleNextButtonOnPress}>
-        Next
+        {Strings.button_next}
       </Button>
     </SafeAreaView>
   )

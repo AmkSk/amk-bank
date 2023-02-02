@@ -4,6 +4,7 @@ import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { RootStackParamList } from '../navigation/NavigationTypes'
 import { Routes } from '../navigation/Routes'
 import { ScreenTemplate } from './ScreenTemplate'
+import { Strings } from '../i18n/Strings'
 
 export default function WelcomeScreen({
   navigation,
@@ -13,25 +14,25 @@ export default function WelcomeScreen({
       <Image style={styles.image} source={require('../../assets/images/onboarding_3.png')} />
 
       <Text variant='headlineMedium' style={styles.text}>
-        Create your Coinpay account
+        {Strings.welcome_title}
       </Text>
       <Text variant='bodyMedium' style={styles.text}>
-        Coinpay is a powerful tool that allows you to easily send, receive, and track all your transactions.
+        {Strings.welcome_subtitle}
       </Text>
 
       <View style={styles.buttons}>
         <View>
           <Button mode='contained' style={styles.button} onPress={() => console.log('Open signup')}>
-            Sign up
+            {Strings.welcome_sign_up}
           </Button>
           <Button mode='outlined' style={styles.button} onPress={() => navigation.navigate(Routes.LoginScreen)}>
-            Log in
+            {Strings.welcome_log_in}
           </Button>
         </View>
       </View>
 
       <Text variant='bodySmall' style={styles.text}>
-        By continuing you accept our Terms of Service and Privacy Policy
+        {Strings.welcome_toc}
       </Text>
     </ScreenTemplate>
   )
