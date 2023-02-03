@@ -21,6 +21,8 @@ import { View } from 'react-native'
 import WelcomeScreen from './src/screens/WelcomeScreen'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { USER_PREFERENCES } from './src/Constants'
+import TosModalScreen from './src/screens/TosModalScreen'
+import PrivacyPolicyModalScreen from './src/screens/PrivacyPolicyModalScreen'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -55,12 +57,26 @@ export default function App() {
       <SafeAreaProvider>
         <PaperProvider theme={theme}>
           <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-            <RootStack.Navigator screenOptions={{ animation: 'slide_from_right', animationDuration: 100 }}>
-              {shouldHideIntro ? undefined : (
-                <RootStack.Screen name={Routes.IntroScreen} component={IntroScreen} options={{ headerShown: false }} />
-              )}
-              <RootStack.Screen name={Routes.WelcomeScreen} component={WelcomeScreen} options={{ title: '' }} />
-              <RootStack.Screen name={Routes.LoginScreen} component={LoginScreen} />
+            <RootStack.Navigator>
+              <RootStack.Group screenOptions={{ animation: 'slide_from_right', animationDuration: 100 }}>
+                {shouldHideIntro ? undefined : (
+                  <RootStack.Screen
+                    name={Routes.IntroScreen}
+                    component={IntroScreen}
+                    options={{ headerShown: false }}
+                  />
+                )}
+                <RootStack.Screen name={Routes.WelcomeScreen} component={WelcomeScreen} options={{ title: '' }} />
+                <RootStack.Screen name={Routes.LoginScreen} component={LoginScreen} />
+              </RootStack.Group>
+              <RootStack.Group screenOptions={{ presentation: 'modal' }}>
+                <RootStack.Screen name={Routes.TosModal} component={TosModalScreen} options={{ title: '' }} />
+                <RootStack.Screen
+                  name={Routes.PrivacyPolicyModal}
+                  component={PrivacyPolicyModalScreen}
+                  options={{ title: '' }}
+                />
+              </RootStack.Group>
             </RootStack.Navigator>
           </View>
         </PaperProvider>

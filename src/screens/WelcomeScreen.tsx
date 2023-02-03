@@ -4,11 +4,17 @@ import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { RootStackParamList } from '../navigation/NavigationTypes'
 import { Routes } from '../navigation/Routes'
 import { ScreenTemplate } from './ScreenTemplate'
+import { theme } from '../themes/Theme'
 import { Strings } from '../i18n/Strings'
 
 export default function WelcomeScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, Routes.WelcomeScreen>) {
+  const onSignupPress = () => console.log('Show Signup')
+  const onLoginPress = () => navigation.navigate(Routes.LoginScreen)
+  const onTosPress = () => navigation.navigate(Routes.TosModal)
+  const onPrivacyPolicyPress = () => navigation.navigate(Routes.PrivacyPolicyModal)
+
   return (
     <ScreenTemplate style={styles.container}>
       <Image style={styles.image} source={require('../../assets/images/onboarding_3.png')} />
@@ -22,10 +28,10 @@ export default function WelcomeScreen({
 
       <View style={styles.buttons}>
         <View>
-          <Button mode='contained' style={styles.button} onPress={() => console.log('Open signup')}>
+          <Button mode='contained' style={styles.button} onPress={onSignupPress}>
             {Strings.welcome_sign_up}
           </Button>
-          <Button mode='outlined' style={styles.button} onPress={() => navigation.navigate(Routes.LoginScreen)}>
+          <Button mode='outlined' style={styles.button} onPress={onLoginPress}>
             {Strings.welcome_log_in}
           </Button>
         </View>
@@ -33,6 +39,14 @@ export default function WelcomeScreen({
 
       <Text variant='bodySmall' style={styles.text}>
         {Strings.welcome_toc}
+        {'\n'}
+        <Text style={styles.clickableText} onPress={onTosPress}>
+          {Strings.terms_of_service_title}{' '}
+        </Text>
+        {Strings.and}{' '}
+        <Text style={styles.clickableText} onPress={onPrivacyPolicyPress}>
+          {Strings.privacy_policy_title}
+        </Text>
       </Text>
     </ScreenTemplate>
   )
@@ -57,5 +71,9 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 16,
+  },
+  clickableText: {
+    color: theme.colors.primary,
+    textDecorationLine: 'underline',
   },
 })
