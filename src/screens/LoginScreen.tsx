@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View } from 'react-native'
 import { Button, Text } from 'react-native-paper'
+import { CommonStyles } from '../themes/CommonStyles'
 
 export default function LoginScreen() {
   return (
-    <View style={styles.container}>
+    <View style={[CommonStyles.flex1, styles.container]}>
       <Text variant='displayLarge'>Display Large</Text>
       <Text variant='displayMedium'>Display Medium</Text>
       <Text variant='displaySmall'>Display small</Text>
@@ -32,7 +33,6 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',

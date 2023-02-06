@@ -10,6 +10,7 @@ import { theme } from '../themes/Theme'
 import { USER_PREFERENCES } from '../Constants'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Strings } from '../i18n/Strings'
+import { CommonStyles } from '../themes/CommonStyles'
 
 type Page = {
   imageSource: ImageSourcePropType
@@ -48,10 +49,10 @@ export default function IntroScreen({ navigation }: NativeStackScreenProps<RootS
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[CommonStyles.flex1, styles.container]}>
       <PagerView
         ref={pagerRef}
-        style={styles.pagerView}
+        style={CommonStyles.flex1}
         onPageSelected={(event) => setActivePage(event.nativeEvent.position)}
       >
         {INTRO_PAGES.map((page, index) => (
@@ -88,11 +89,7 @@ function IndicatorView({ activePage, pagesCount }: IndicatorProps): JSX.Element 
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
-  },
-  pagerView: {
-    flex: 1,
   },
   pagerContent: {
     justifyContent: 'space-evenly',

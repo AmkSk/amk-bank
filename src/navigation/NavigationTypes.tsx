@@ -6,4 +6,6 @@ export type RootStackParamList = {
   [Routes.IntroScreen]: undefined
   [Routes.TosModal]: undefined
   [Routes.PrivacyPolicyModal]: undefined
+  // Onboarding
+  [Routes.OnboardingCreateAccountScreen]: undefined
 }

@@ -4,4 +4,6 @@ export enum Routes {
   LoginScreen = 'LoginScreen',
   TosModal = 'TosModal',
   PrivacyPolicyModal = 'PrivacyPolicyModal',
+  // Onboarding
+  OnboardingCreateAccountScreen = 'OnboardingCreateAccountScreen',
 }

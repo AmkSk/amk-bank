@@ -1,5 +1,6 @@
 import React from 'react'
 import { SafeAreaView, StyleSheet, View, ViewStyle } from 'react-native'
+import { CommonStyles } from '../themes/CommonStyles'
 
 interface Props {
   style?: ViewStyle
@@ -15,20 +16,18 @@ interface Props {
  */
 export function ScreenTemplate({ style, children }: Props) {
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={[style, styles.content]}>{children}</View>
+    <SafeAreaView style={[CommonStyles.flex1, styles.container]}>
+      <View style={[CommonStyles.flex1, styles.content, style]}>{children}</View>
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: '100%',
     backgroundColor: '#fff',
   },
   content: {
-    flex: 1,
     margin: 16,
   },
 })

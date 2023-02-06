@@ -108,4 +108,9 @@ export const Strings = {
     '\n' +
     'If you have any questions or concerns about this privacy policy, please contact us through the contact information provided in our app.\n' +
     '\n',
+  onboarding_create_account_title: 'Create an Account',
+  onboarding_create_account_subtitle: 'Enter your mobile number to verify your account',
+  onboarding_create_account_placeholder_phone_number: 'Phone Number',
+  onboarding_create_account_placeholder_country_prefix: 'Code',
+  onboarding_create_account_placeholder_pwd: 'Password',
 }

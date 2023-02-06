@@ -23,6 +23,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { USER_PREFERENCES } from './src/Constants'
 import TosModalScreen from './src/screens/TosModalScreen'
 import PrivacyPolicyModalScreen from './src/screens/PrivacyPolicyModalScreen'
+import { OnboardingCreateAccountScreen } from './src/screens/onboarding/OnboardingCreateAccountScreen'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -68,6 +69,11 @@ export default function App() {
                 )}
                 <RootStack.Screen name={Routes.WelcomeScreen} component={WelcomeScreen} options={{ title: '' }} />
                 <RootStack.Screen name={Routes.LoginScreen} component={LoginScreen} />
+                <RootStack.Screen
+                  name={Routes.OnboardingCreateAccountScreen}
+                  component={OnboardingCreateAccountScreen}
+                  options={{ title: '' }}
+                />
               </RootStack.Group>
               <RootStack.Group screenOptions={{ presentation: 'modal' }}>
                 <RootStack.Screen name={Routes.TosModal} component={TosModalScreen} options={{ title: '' }} />

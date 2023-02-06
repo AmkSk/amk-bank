@@ -6,11 +6,12 @@ import { Routes } from '../navigation/Routes'
 import { ScreenTemplate } from './ScreenTemplate'
 import { theme } from '../themes/Theme'
 import { Strings } from '../i18n/Strings'
+import { CommonStyles } from '../themes/CommonStyles'
 
 export default function WelcomeScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, Routes.WelcomeScreen>) {
-  const onSignupPress = () => console.log('Show Signup')
+  const onSignupPress = () => navigation.navigate(Routes.OnboardingCreateAccountScreen)
   const onLoginPress = () => navigation.navigate(Routes.LoginScreen)
   const onTosPress = () => navigation.navigate(Routes.TosModal)
   const onPrivacyPolicyPress = () => navigation.navigate(Routes.PrivacyPolicyModal)
@@ -26,7 +27,7 @@ export default function WelcomeScreen({
         {Strings.welcome_subtitle}
       </Text>
 
-      <View style={styles.buttons}>
+      <View style={[CommonStyles.flex1, styles.buttons]}>
         <View>
           <Button mode='contained' style={styles.button} onPress={onSignupPress}>
             {Strings.welcome_sign_up}
@@ -66,7 +67,6 @@ const styles = StyleSheet.create({
   },
   buttons: {
     width: '100%',
-    flex: 1,
     justifyContent: 'space-around',
   },
   button: {
