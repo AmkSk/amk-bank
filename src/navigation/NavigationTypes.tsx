@@ -8,4 +8,5 @@ export type RootStackParamList = {
   [Routes.PrivacyPolicyModal]: undefined
   // Onboarding
   [Routes.OnboardingCreateAccountScreen]: undefined
+  [Routes.OnboardingEmailScreen]: undefined
 }

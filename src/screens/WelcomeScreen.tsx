@@ -18,7 +18,7 @@ export default function WelcomeScreen({
 
   return (
     <ScreenTemplate style={styles.container}>
-      <Image style={styles.image} source={require('../../assets/images/onboarding_3.png')} />
+      <Image style={[CommonStyles.mt32, CommonStyles.mb16]} source={require('../../assets/images/onboarding_3.png')} />
 
       <Text variant='headlineMedium' style={styles.text}>
         {Strings.welcome_title}
@@ -29,10 +29,10 @@ export default function WelcomeScreen({
 
       <View style={[CommonStyles.flex1, styles.buttons]}>
         <View>
-          <Button mode='contained' style={styles.button} onPress={onSignupPress}>
+          <Button mode='contained' style={CommonStyles.mt16} onPress={onSignupPress}>
             {Strings.welcome_sign_up}
           </Button>
-          <Button mode='outlined' style={styles.button} onPress={onLoginPress}>
+          <Button mode='outlined' style={CommonStyles.mt16} onPress={onLoginPress}>
             {Strings.welcome_log_in}
           </Button>
         </View>
@@ -57,10 +57,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
   },
-  image: {
-    marginTop: 32,
-    marginBottom: 16,
-  },
   text: {
     marginTop: 16,
     textAlign: 'center',
@@ -68,9 +64,6 @@ const styles = StyleSheet.create({
   buttons: {
     width: '100%',
     justifyContent: 'space-around',
-  },
-  button: {
-    marginTop: 16,
   },
   clickableText: {
     color: theme.colors.primary,

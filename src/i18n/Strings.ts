@@ -113,4 +113,7 @@ export const Strings = {
   onboarding_create_account_placeholder_phone_number: 'Phone Number',
   onboarding_create_account_placeholder_country_prefix: 'Code',
   onboarding_create_account_placeholder_pwd: 'Password',
+  onboarding_email_title: 'Add your email',
+  onboarding_email_subtitle: 'This info needs to be accurate with your ID document',
+  onboarding_email_placeholder: 'Email',
 }

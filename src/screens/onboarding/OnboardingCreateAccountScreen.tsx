@@ -20,17 +20,17 @@ export function OnboardingCreateAccountScreen({
   useEffect(() => {
     // TODO: Add phone number validation
     setIsButtonEnabled(prefix !== '' && phoneNumber !== '' && password !== '')
-  }, [prefix, phoneNumber])
+  }, [prefix, phoneNumber, password])
 
   const phoneInput = useRef<RnTextInput>(null)
   const pwdInput = useRef<RnTextInput>(null)
-  const onNextPress = () => {}
+  const onNextPress = () => navigation.navigate(Routes.OnboardingEmailScreen)
 
   return (
     <ScreenTemplate>
       <Text variant='headlineMedium'>{Strings.onboarding_create_account_title}</Text>
       <Text variant='bodyMedium'>{Strings.onboarding_create_account_subtitle}</Text>
-      <View style={styles.phoneNumberInputs}>
+      <View style={[CommonStyles.mt16, styles.phoneNumberInputs]}>
         <TextInput
           mode='outlined'
           style={CommonStyles.flex1}
@@ -46,7 +46,7 @@ export function OnboardingCreateAccountScreen({
         <TextInput
           ref={phoneInput}
           mode='outlined'
-          style={styles.phoneNumberInput}
+          style={[CommonStyles.ml8, styles.phoneNumberInput]}
           keyboardType='number-pad'
           returnKeyType='next'
           label={Strings.onboarding_create_account_placeholder_phone_number}
@@ -58,7 +58,7 @@ export function OnboardingCreateAccountScreen({
       </View>
 
       <TextInput
-        style={styles.passwordInput}
+        style={CommonStyles.mt8}
         mode='outlined'
         value={password}
         ref={pwdInput}
@@ -81,13 +81,8 @@ export function OnboardingCreateAccountScreen({
 const styles = StyleSheet.create({
   phoneNumberInputs: {
     flexDirection: 'row',
-    marginTop: 16,
   },
   phoneNumberInput: {
     flex: 3,
-    marginLeft: 8,
-  },
-  passwordInput: {
-    marginTop: 8,
   },
 })

@@ -58,7 +58,7 @@ export default function IntroScreen({ navigation }: NativeStackScreenProps<RootS
         {INTRO_PAGES.map((page, index) => (
           <View key={index} style={styles.pagerContent}>
             <Image source={page.imageSource} />
-            <Text style={styles.text} variant='headlineMedium'>
+            <Text style={[CommonStyles.ml16, CommonStyles.mr16, styles.text]} variant='headlineMedium'>
               {page.text}
             </Text>
           </View>
@@ -67,7 +67,11 @@ export default function IntroScreen({ navigation }: NativeStackScreenProps<RootS
 
       <IndicatorView activePage={activePage} pagesCount={INTRO_PAGES.length} />
 
-      <Button style={styles.nextButton} mode='contained' onPress={handleNextButtonOnPress}>
+      <Button
+        style={[CommonStyles.ml16, CommonStyles.mr16, CommonStyles.mb16]}
+        mode='contained'
+        onPress={handleNextButtonOnPress}
+      >
         {Strings.button_next}
       </Button>
     </SafeAreaView>
@@ -81,10 +85,13 @@ interface IndicatorProps {
 
 function IndicatorView({ activePage, pagesCount }: IndicatorProps): JSX.Element {
   const indicators = Array.from({ length: pagesCount }).map((_, index) => (
-    <View key={index} style={[styles.indicator, index === activePage ? styles.selectedIndicator : undefined]} />
+    <View
+      key={index}
+      style={[CommonStyles.mr8, styles.indicator, index === activePage ? styles.selectedIndicator : undefined]}
+    />
   ))
 
-  return <View style={styles.indicatorContainer}>{indicators}</View>
+  return <View style={[CommonStyles.mb32, styles.indicatorContainer]}>{indicators}</View>
 }
 
 const styles = StyleSheet.create({
@@ -96,29 +103,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    marginLeft: 16,
-    marginRight: 16,
     textAlign: 'center',
   },
   indicatorContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 32,
     flexDirection: 'row',
   },
   indicator: {
     width: 16,
     height: 8,
-    marginRight: 8,
     backgroundColor: theme.colors.surfaceDisabled,
     borderRadius: 19,
   },
   selectedIndicator: {
     backgroundColor: theme.colors.primary,
-  },
-  nextButton: {
-    marginLeft: 16,
-    marginRight: 16,
-    marginBottom: 16,
   },
 })

@@ -24,6 +24,7 @@ import { USER_PREFERENCES } from './src/Constants'
 import TosModalScreen from './src/screens/TosModalScreen'
 import PrivacyPolicyModalScreen from './src/screens/PrivacyPolicyModalScreen'
 import { OnboardingCreateAccountScreen } from './src/screens/onboarding/OnboardingCreateAccountScreen'
+import { OnboardingEmailScreen } from './src/screens/onboarding/OnboardingEmailScreen'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -72,6 +73,11 @@ export default function App() {
                 <RootStack.Screen
                   name={Routes.OnboardingCreateAccountScreen}
                   component={OnboardingCreateAccountScreen}
+                  options={{ title: '' }}
+                />
+                <RootStack.Screen
+                  name={Routes.OnboardingEmailScreen}
+                  component={OnboardingEmailScreen}
                   options={{ title: '' }}
                 />
               </RootStack.Group>

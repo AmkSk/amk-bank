@@ -6,4 +6,5 @@ export enum Routes {
   PrivacyPolicyModal = 'PrivacyPolicyModal',
   // Onboarding
   OnboardingCreateAccountScreen = 'OnboardingCreateAccountScreen',
+  OnboardingEmailScreen = 'OnboardingEmailScreen',
 }
