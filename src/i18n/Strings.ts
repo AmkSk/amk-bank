@@ -116,4 +116,9 @@ export const Strings = {
   onboarding_email_title: 'Add your email',
   onboarding_email_subtitle: 'This info needs to be accurate with your ID document',
   onboarding_email_placeholder: 'Email',
+  onboarding_personal_info_title: 'Add your personal info',
+  onboarding_personal_info_subtitle: 'We need to know more about you',
+  onboarding_personal_info_name_placeholder: 'Given names',
+  onboarding_personal_info_surname_placeholder: 'Surname',
+  onboarding_personal_info_birthday_placeholder: 'Date of birth',
 }

@@ -9,4 +9,5 @@ export type RootStackParamList = {
   // Onboarding
   [Routes.OnboardingCreateAccountScreen]: undefined
   [Routes.OnboardingEmailScreen]: undefined
+  [Routes.OnboardingPersonalInfoScreen]: undefined
 }

@@ -19,7 +19,7 @@ export function OnboardingEmailScreen({
     setIsButtonEnabled(email !== '')
   }, [email])
 
-  const onNextPress = () => {}
+  const onNextPress = () => navigation.navigate(Routes.OnboardingPersonalInfoScreen)
 
   return (
     <ScreenTemplate>

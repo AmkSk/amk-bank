@@ -7,4 +7,5 @@ export enum Routes {
   // Onboarding
   OnboardingCreateAccountScreen = 'OnboardingCreateAccountScreen',
   OnboardingEmailScreen = 'OnboardingEmailScreen',
+  OnboardingPersonalInfoScreen = 'OnboardingPersonalInfoScreen',
 }
