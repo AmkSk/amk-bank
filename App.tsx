@@ -26,6 +26,7 @@ import PrivacyPolicyModalScreen from './src/screens/PrivacyPolicyModalScreen'
 import { OnboardingCreateAccountScreen } from './src/screens/onboarding/OnboardingCreateAccountScreen'
 import { OnboardingEmailScreen } from './src/screens/onboarding/OnboardingEmailScreen'
 import { OnboardingPersonalInfoScreen } from './src/screens/onboarding/OnboardingPersonalInfoScreen'
+import { OnboardingCountryScreen } from './src/screens/onboarding/OnboardingCountryScreen'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -84,6 +85,11 @@ export default function App() {
                 <RootStack.Screen
                   name={Routes.OnboardingPersonalInfoScreen}
                   component={OnboardingPersonalInfoScreen}
+                  options={{ title: '' }}
+                />
+                <RootStack.Screen
+                  name={Routes.OnboardingCountryScreen}
+                  component={OnboardingCountryScreen}
                   options={{ title: '' }}
                 />
               </RootStack.Group>

@@ -32,7 +32,7 @@ export function OnboardingPersonalInfoScreen({
     setIsButtonEnabled(name !== '' && surname !== '')
   }, [name, surname, dateOfBirth])
 
-  const onNextPress = () => {}
+  const onNextPress = () => navigation.navigate(Routes.OnboardingCountryScreen)
 
   return (
     <ScreenTemplate>

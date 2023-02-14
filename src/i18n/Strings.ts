@@ -121,4 +121,8 @@ export const Strings = {
   onboarding_personal_info_name_placeholder: 'Given names',
   onboarding_personal_info_surname_placeholder: 'Surname',
   onboarding_personal_info_birthday_placeholder: 'Date of birth',
+  onboarding_country_title: 'Country of residence',
+  onboarding_country_subtitle: 'Please add the country where your permanent address is located',
+  onboarding_country_label: 'Country',
+  onboarding_country_placeholder: 'Pick your country',
 }

@@ -8,4 +8,5 @@ export enum Routes {
   OnboardingCreateAccountScreen = 'OnboardingCreateAccountScreen',
   OnboardingEmailScreen = 'OnboardingEmailScreen',
   OnboardingPersonalInfoScreen = 'OnboardingPersonalInfoScreen',
+  OnboardingCountryScreen = 'OnboardingCountryScreen',
 }
