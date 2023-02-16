@@ -96,7 +96,7 @@ function IndicatorView({ activePage, pagesCount }: IndicatorProps): JSX.Element 
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.background,
   },
   pagerContent: {
     justifyContent: 'space-evenly',

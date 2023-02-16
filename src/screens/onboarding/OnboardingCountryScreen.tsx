@@ -11,6 +11,7 @@ import { AmkBankApi } from '../../network/AmkBankClient'
 import { Country } from '../../data/Country'
 import { PaperSelect } from 'react-native-paper-select'
 import { SelectedItem } from 'react-native-paper-select/lib/typescript/interface/paperSelect.interface'
+import { useLoadingAction } from '../../hooks/useLoadingAction'
 import { useOnboardingStore } from '../../stores/onboardingStore'
 
 export function OnboardingCountryScreen({
@@ -26,10 +27,13 @@ export function OnboardingCountryScreen({
     setIsButtonEnabled(selectedCountry !== null)
   }, [selectedCountry])
 
-  useEffect(() => {
+  const { loadingAction } = useLoadingAction(
     AmkBankApi.getCountries()
       .then((data) => setCountries(data))
-      .catch((reason) => console.log(reason))
+      .catch((reason) => console.log(reason)),
+  )
+  useEffect(() => {
+    loadingAction()
   }, [])
 
   return (

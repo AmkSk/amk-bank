@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View } from 'react-native'
 import { Button, Text } from 'react-native-paper'
 import { CommonStyles } from '../themes/CommonStyles'
+import { theme } from '../themes/Theme'
 
 export default function LoginScreen() {
   return (
@@ -33,7 +34,7 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.background,
     alignItems: 'center',
     justifyContent: 'center',
   },

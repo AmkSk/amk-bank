@@ -10,8 +10,9 @@ export class AmkBankApiImpl implements AmkBankApi {
   }
 
   async getCountries(): Promise<Country[]> {
-    //TODO add loading
     const response = await this.axiosClient.get<Country[]>('/countries')
     return response.data
   }
+
+  delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 }

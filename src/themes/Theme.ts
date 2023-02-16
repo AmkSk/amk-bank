@@ -10,6 +10,7 @@ export const theme = {
     primary: colors.blue,
     secondary: colors.yellow,
     error: colors.red,
+    background: colors.white,
   },
   fonts: configureFonts({ config: fontConfig }),
 }

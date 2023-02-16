@@ -27,6 +27,7 @@ import { OnboardingCreateAccountScreen } from './src/screens/onboarding/Onboardi
 import { OnboardingEmailScreen } from './src/screens/onboarding/OnboardingEmailScreen'
 import { OnboardingPersonalInfoScreen } from './src/screens/onboarding/OnboardingPersonalInfoScreen'
 import { OnboardingCountryScreen } from './src/screens/onboarding/OnboardingCountryScreen'
+import { LoadingContextProvider } from './src/hooks/useLoadingAction'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -61,47 +62,49 @@ export default function App() {
       <SafeAreaProvider>
         <PaperProvider theme={theme}>
           <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-            <RootStack.Navigator>
-              <RootStack.Group screenOptions={{ animation: 'slide_from_right', animationDuration: 100 }}>
-                {shouldHideIntro ? undefined : (
+            <LoadingContextProvider>
+              <RootStack.Navigator>
+                <RootStack.Group screenOptions={{ animation: 'slide_from_right', animationDuration: 100 }}>
+                  {shouldHideIntro ? undefined : (
+                    <RootStack.Screen
+                      name={Routes.IntroScreen}
+                      component={IntroScreen}
+                      options={{ headerShown: false }}
+                    />
+                  )}
+                  <RootStack.Screen name={Routes.WelcomeScreen} component={WelcomeScreen} options={{ title: '' }} />
+                  <RootStack.Screen name={Routes.LoginScreen} component={LoginScreen} />
                   <RootStack.Screen
-                    name={Routes.IntroScreen}
-                    component={IntroScreen}
-                    options={{ headerShown: false }}
+                    name={Routes.OnboardingCreateAccountScreen}
+                    component={OnboardingCreateAccountScreen}
+                    options={{ title: '' }}
                   />
-                )}
-                <RootStack.Screen name={Routes.WelcomeScreen} component={WelcomeScreen} options={{ title: '' }} />
-                <RootStack.Screen name={Routes.LoginScreen} component={LoginScreen} />
-                <RootStack.Screen
-                  name={Routes.OnboardingCreateAccountScreen}
-                  component={OnboardingCreateAccountScreen}
-                  options={{ title: '' }}
-                />
-                <RootStack.Screen
-                  name={Routes.OnboardingEmailScreen}
-                  component={OnboardingEmailScreen}
-                  options={{ title: '' }}
-                />
-                <RootStack.Screen
-                  name={Routes.OnboardingPersonalInfoScreen}
-                  component={OnboardingPersonalInfoScreen}
-                  options={{ title: '' }}
-                />
-                <RootStack.Screen
-                  name={Routes.OnboardingCountryScreen}
-                  component={OnboardingCountryScreen}
-                  options={{ title: '' }}
-                />
-              </RootStack.Group>
-              <RootStack.Group screenOptions={{ presentation: 'modal' }}>
-                <RootStack.Screen name={Routes.TosModal} component={TosModalScreen} options={{ title: '' }} />
-                <RootStack.Screen
-                  name={Routes.PrivacyPolicyModal}
-                  component={PrivacyPolicyModalScreen}
-                  options={{ title: '' }}
-                />
-              </RootStack.Group>
-            </RootStack.Navigator>
+                  <RootStack.Screen
+                    name={Routes.OnboardingEmailScreen}
+                    component={OnboardingEmailScreen}
+                    options={{ title: '' }}
+                  />
+                  <RootStack.Screen
+                    name={Routes.OnboardingPersonalInfoScreen}
+                    component={OnboardingPersonalInfoScreen}
+                    options={{ title: '' }}
+                  />
+                  <RootStack.Screen
+                    name={Routes.OnboardingCountryScreen}
+                    component={OnboardingCountryScreen}
+                    options={{ title: '' }}
+                  />
+                </RootStack.Group>
+                <RootStack.Group screenOptions={{ presentation: 'modal' }}>
+                  <RootStack.Screen name={Routes.TosModal} component={TosModalScreen} options={{ title: '' }} />
+                  <RootStack.Screen
+                    name={Routes.PrivacyPolicyModal}
+                    component={PrivacyPolicyModalScreen}
+                    options={{ title: '' }}
+                  />
+                </RootStack.Group>
+              </RootStack.Navigator>
+            </LoadingContextProvider>
           </View>
         </PaperProvider>
       </SafeAreaProvider>

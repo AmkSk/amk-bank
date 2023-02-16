@@ -1,6 +1,7 @@
 import React from 'react'
 import { SafeAreaView, StyleSheet, View, ViewStyle } from 'react-native'
 import { CommonStyles } from '../themes/CommonStyles'
+import { theme } from '../themes/Theme'
 
 interface Props {
   style?: ViewStyle
@@ -25,7 +26,7 @@ export function ScreenTemplate({ style, children }: Props) {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.background,
   },
   content: {
     margin: 16,
