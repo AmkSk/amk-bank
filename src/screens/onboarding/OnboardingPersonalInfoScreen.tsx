@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from 'react'
 import { CommonStyles } from '../../themes/CommonStyles'
 import { DatePickerModal, en, registerTranslation } from 'react-native-paper-dates'
 import { getLocales } from 'expo-localization'
+import { useOnboardingStore } from '../../stores/onboardingStore'
 
 registerTranslation('en', en)
 
@@ -19,11 +20,14 @@ export function OnboardingPersonalInfoScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, Routes.OnboardingPersonalInfoScreen>) {
   const locales = getLocales()
-  const [name, setName] = useState('')
-  const [surname, setSurname] = useState('')
-  const [dateOfBirth, setDateOfBirth] = useState<Date | undefined>(undefined)
   const [isDatePickerVisible, showDatePicker] = useState(false)
   const [isButtonEnabled, setIsButtonEnabled] = useState(false)
+  const name = useOnboardingStore((store) => store.name)
+  const surname = useOnboardingStore((store) => store.surname)
+  const dateOfBirth = useOnboardingStore((store) => store.dateOfBirth)
+  const setName = useOnboardingStore((store) => store.setName)
+  const setSurname = useOnboardingStore((store) => store.setSurname)
+  const setDateOfBirth = useOnboardingStore((store) => store.setDateOfBirth)
 
   const surnameInput = useRef<RnTextInput>(null)
   const dateOfBirthInput = useRef<RnTextInput>(null)

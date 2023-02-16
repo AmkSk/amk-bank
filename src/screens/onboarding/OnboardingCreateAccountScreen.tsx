@@ -7,20 +7,24 @@ import { Strings } from '../../i18n/Strings'
 import { StyleSheet, TextInput as RnTextInput, View } from 'react-native'
 import { useEffect, useRef, useState } from 'react'
 import { CommonStyles } from '../../themes/CommonStyles'
+import { useOnboardingStore } from '../../stores/onboardingStore'
 
 export function OnboardingCreateAccountScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, Routes.OnboardingCreateAccountScreen>) {
-  const [prefix, setPrefix] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isButtonEnabled, setIsButtonEnabled] = useState(false)
 
+  const phonePrefix = useOnboardingStore((state) => state.phonePrefix)
+  const phoneNumber = useOnboardingStore((state) => state.phoneNumber)
+  const setPhoneNumber = useOnboardingStore((state) => state.setPhoneNumber)
+  const setPhonePrefix = useOnboardingStore((state) => state.setPhonePrefix)
+
   useEffect(() => {
     // TODO: Add phone number validation
-    setIsButtonEnabled(prefix !== '' && phoneNumber !== '' && password !== '')
-  }, [prefix, phoneNumber, password])
+    setIsButtonEnabled(phonePrefix !== '' && phoneNumber !== '' && password !== '')
+  }, [phonePrefix, phoneNumber, password])
 
   const phoneInput = useRef<RnTextInput>(null)
   const pwdInput = useRef<RnTextInput>(null)
@@ -40,8 +44,8 @@ export function OnboardingCreateAccountScreen({
           label={Strings.onboarding_create_account_placeholder_country_prefix}
           placeholder={Strings.onboarding_create_account_placeholder_country_prefix}
           onSubmitEditing={() => phoneInput.current?.focus()}
-          value={prefix}
-          onChangeText={setPrefix}
+          value={phonePrefix}
+          onChangeText={setPhonePrefix}
         />
         <TextInput
           ref={phoneInput}

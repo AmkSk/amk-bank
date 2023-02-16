@@ -7,12 +7,14 @@ import { Strings } from '../../i18n/Strings'
 import { View } from 'react-native'
 import { useEffect, useState } from 'react'
 import { CommonStyles } from '../../themes/CommonStyles'
+import { useOnboardingStore } from '../../stores/onboardingStore'
 
 export function OnboardingEmailScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, Routes.OnboardingEmailScreen>) {
-  const [email, setEmail] = useState('')
   const [isButtonEnabled, setIsButtonEnabled] = useState(false)
+  const email = useOnboardingStore((state) => state.email)
+  const setEmail = useOnboardingStore((state) => state.setEmail)
 
   useEffect(() => {
     // TODO: Add email validation

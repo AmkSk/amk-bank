@@ -11,13 +11,15 @@ import { AmkBankApi } from '../../network/AmkBankClient'
 import { Country } from '../../data/Country'
 import { PaperSelect } from 'react-native-paper-select'
 import { SelectedItem } from 'react-native-paper-select/lib/typescript/interface/paperSelect.interface'
+import { useOnboardingStore } from '../../stores/onboardingStore'
 
 export function OnboardingCountryScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, Routes.OnboardingCountryScreen>) {
   const [countries, setCountries] = useState<Country[]>([])
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null)
   const [isButtonEnabled, setIsButtonEnabled] = useState(false)
+  const selectedCountry = useOnboardingStore((state) => state.countryOfResidence)
+  const setSelectedCountry = useOnboardingStore((state) => state.setCountryOfResidence)
   const onNextPress = () => {}
 
   useEffect(() => {
