@@ -30,6 +30,4 @@ export class AmkBankApiImpl implements AmkBankApi {
     })
     return response.data
   }
-
-  delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 }
