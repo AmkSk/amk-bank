@@ -1,12 +1,15 @@
-import { ActivityIndicator, Modal, Portal } from 'react-native-paper'
+import { ActivityIndicator, MD3Theme, Modal, Portal, useTheme } from 'react-native-paper'
 import { StyleSheet, View } from 'react-native'
-import { theme } from '../themes/Theme'
+import { useMemo } from 'react'
 
 interface Props {
   visible: boolean
 }
 
 export function LoadingModal({ visible }: Props) {
+  const theme = useTheme()
+  const styles = useMemo(() => createStyleSheet(theme), [theme])
+
   return (
     <Portal>
       <Modal visible={visible} style={styles.modal} dismissable={false}>
@@ -18,15 +21,17 @@ export function LoadingModal({ visible }: Props) {
   )
 }
 
-const styles = StyleSheet.create({
-  modal: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  container: {
-    paddingHorizontal: 64,
-    paddingVertical: 32,
-    backgroundColor: theme.colors.background,
-    borderRadius: 32,
-  },
-})
+const createStyleSheet = (theme: MD3Theme) => {
+  return StyleSheet.create({
+    modal: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    container: {
+      paddingHorizontal: 64,
+      paddingVertical: 32,
+      backgroundColor: theme.colors.background,
+      borderRadius: 32,
+    },
+  })
+}

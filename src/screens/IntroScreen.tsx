@@ -1,12 +1,11 @@
 import { Image, ImageSourcePropType, SafeAreaView, StyleSheet, View } from 'react-native'
-import { Button, Text } from 'react-native-paper'
+import { Button, MD3Theme, Text, useTheme } from 'react-native-paper'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
 import { RootStackParamList } from '../navigation/NavigationTypes'
 import { Routes } from '../navigation/Routes'
 import PagerView from 'react-native-pager-view'
-import { useRef, useState } from 'react'
-import { theme } from '../themes/Theme'
+import { useMemo, useRef, useState } from 'react'
 import { USER_PREFERENCES } from '../Constants'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Strings } from '../i18n/Strings'
@@ -36,6 +35,8 @@ const INTRO_PAGES: Page[] = [
 export default function IntroScreen({ navigation }: NativeStackScreenProps<RootStackParamList, Routes.IntroScreen>) {
   const [activePage, setActivePage] = useState(0)
   const pagerRef = useRef<PagerView>(null)
+  const theme = useTheme()
+  const styles = useMemo(() => createStyleSheet(theme), [theme])
 
   const handleNextButtonOnPress = () => {
     const nextPage = activePage + 1
@@ -84,6 +85,9 @@ interface IndicatorProps {
 }
 
 function IndicatorView({ activePage, pagesCount }: IndicatorProps): JSX.Element {
+  const theme = useTheme()
+  const styles = useMemo(() => createStyleSheet(theme), [theme])
+
   const indicators = Array.from({ length: pagesCount }).map((_, index) => (
     <View
       key={index}
@@ -94,29 +98,31 @@ function IndicatorView({ activePage, pagesCount }: IndicatorProps): JSX.Element 
   return <View style={[CommonStyles.mb32, styles.indicatorContainer]}>{indicators}</View>
 }
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: theme.colors.background,
-  },
-  pagerContent: {
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  text: {
-    textAlign: 'center',
-  },
-  indicatorContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  indicator: {
-    width: 16,
-    height: 8,
-    backgroundColor: theme.colors.surfaceDisabled,
-    borderRadius: 19,
-  },
-  selectedIndicator: {
-    backgroundColor: theme.colors.primary,
-  },
-})
+const createStyleSheet = (theme: MD3Theme) => {
+  return StyleSheet.create({
+    container: {
+      backgroundColor: theme.colors.background,
+    },
+    pagerContent: {
+      justifyContent: 'space-evenly',
+      alignItems: 'center',
+    },
+    text: {
+      textAlign: 'center',
+    },
+    indicatorContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
+    },
+    indicator: {
+      width: 16,
+      height: 8,
+      backgroundColor: theme.colors.surfaceDisabled,
+      borderRadius: 19,
+    },
+    selectedIndicator: {
+      backgroundColor: theme.colors.primary,
+    },
+  })
+}

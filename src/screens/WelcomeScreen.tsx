@@ -1,16 +1,19 @@
 import { Image, StyleSheet, View } from 'react-native'
-import { Button, Text } from 'react-native-paper'
+import { Button, MD3Theme, Text, useTheme } from 'react-native-paper'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { RootStackParamList } from '../navigation/NavigationTypes'
 import { Routes } from '../navigation/Routes'
 import { ScreenTemplate } from './ScreenTemplate'
-import { theme } from '../themes/Theme'
 import { Strings } from '../i18n/Strings'
 import { CommonStyles } from '../themes/CommonStyles'
+import { useMemo } from 'react'
 
 export default function WelcomeScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, Routes.WelcomeScreen>) {
+  const theme = useTheme()
+  const styles = useMemo(() => createStyleSheet(theme), [theme])
+
   const onSignupPress = () => navigation.navigate(Routes.OnboardingCreateAccountScreen)
   const onLoginPress = () => navigation.navigate(Routes.LoginScreen)
   const onTosPress = () => navigation.navigate(Routes.TosModal)
@@ -53,20 +56,22 @@ export default function WelcomeScreen({
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-  text: {
-    marginTop: 16,
-    textAlign: 'center',
-  },
-  buttons: {
-    width: '100%',
-    justifyContent: 'space-around',
-  },
-  clickableText: {
-    color: theme.colors.primary,
-    textDecorationLine: 'underline',
-  },
-})
+const createStyleSheet = (theme: MD3Theme) => {
+  return StyleSheet.create({
+    container: {
+      alignItems: 'center',
+    },
+    text: {
+      marginTop: 16,
+      textAlign: 'center',
+    },
+    buttons: {
+      width: '100%',
+      justifyContent: 'space-around',
+    },
+    clickableText: {
+      color: theme.colors.primary,
+      textDecorationLine: 'underline',
+    },
+  })
+}

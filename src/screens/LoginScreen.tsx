@@ -1,10 +1,13 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View } from 'react-native'
-import { Button, Text } from 'react-native-paper'
+import { Button, MD3Theme, Text, useTheme } from 'react-native-paper'
 import { CommonStyles } from '../themes/CommonStyles'
-import { theme } from '../themes/Theme'
+import { useMemo } from 'react'
 
 export default function LoginScreen() {
+  const theme = useTheme()
+  const styles = useMemo(() => createStyleSheet(theme), [theme])
+
   return (
     <View style={[CommonStyles.flex1, styles.container]}>
       <Text variant='displayLarge'>Display Large</Text>
@@ -31,11 +34,12 @@ export default function LoginScreen() {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: theme.colors.background,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
+const createStyleSheet = (theme: MD3Theme) => {
+  return StyleSheet.create({
+    container: {
+      backgroundColor: theme.colors.background,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  })
+}
