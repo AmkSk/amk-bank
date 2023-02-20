@@ -9,7 +9,9 @@ interface OnboardingState {
   email: string
   dateOfBirth: Date | null
   countryOfResidence: Country | null
+}
 
+interface OnboardingActions {
   setPhonePrefix: (prefix: string) => void
   setPhoneNumber: (number: string) => void
   setName: (name: string) => void
@@ -17,9 +19,10 @@ interface OnboardingState {
   setEmail: (email: string) => void
   setDateOfBirth: (date: Date) => void
   setCountryOfResidence: (country: Country | null) => void
+  clear: () => void
 }
 
-export const useOnboardingStore = create<OnboardingState>((set) => ({
+const initialState: OnboardingState = {
   phonePrefix: '',
   phoneNumber: '',
   name: '',
@@ -27,6 +30,10 @@ export const useOnboardingStore = create<OnboardingState>((set) => ({
   email: '',
   dateOfBirth: null,
   countryOfResidence: null,
+}
+
+export const useOnboardingStore = create<OnboardingState & OnboardingActions>((set) => ({
+  ...initialState,
 
   setPhoneNumber: (number: string) => {
     set((state) => ({ phoneNumber: number }))
@@ -48,5 +55,8 @@ export const useOnboardingStore = create<OnboardingState>((set) => ({
   },
   setCountryOfResidence: (country: Country | null) => {
     set((state) => ({ countryOfResidence: country }))
+  },
+  clear: () => {
+    set(initialState)
   },
 }))

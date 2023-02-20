@@ -14,5 +14,22 @@ export class AmkBankApiImpl implements AmkBankApi {
     return response.data
   }
 
+  async createUser(
+    phoneNumberPrefix: string,
+    phoneNumber: string,
+    email: string,
+    dateOfBirth: string,
+    countryId: string,
+  ): Promise<void> {
+    const response = await this.axiosClient.post<void>('/createuser', {
+      phoneNumberPrefix,
+      phoneNumber,
+      email,
+      dateOfBirth,
+      countryId,
+    })
+    return response.data
+  }
+
   delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 }

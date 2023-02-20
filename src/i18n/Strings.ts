@@ -1,6 +1,7 @@
 export const Strings = {
   button_next: 'Next',
   and: 'and',
+  ok: 'OK',
   onboarding_page_1: 'Trusted by millions of people, part of one part',
   onboarding_page_2: 'Spend money abroad, and track your expense',
   onboarding_page_3: 'Receive Money from anywhere in the world',
@@ -125,4 +126,6 @@ export const Strings = {
   onboarding_country_subtitle: 'Please add the country where your permanent address is located',
   onboarding_country_label: 'Country',
   onboarding_country_placeholder: 'Pick your country',
+  onboarding_success_title: 'Your account has been created',
+  onboarding_success_message: 'Your account has been successfully created! Now you can log in.',
 }

@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { RootStackParamList } from '../../navigation/NavigationTypes'
 import { Routes } from '../../navigation/Routes'
 import { ScreenTemplate } from '../ScreenTemplate'
-import { Button, Text } from 'react-native-paper'
+import { Button, Dialog, Portal, Text } from 'react-native-paper'
 import { Strings } from '../../i18n/Strings'
 import { View } from 'react-native'
 import { useEffect, useState } from 'react'
@@ -13,28 +13,64 @@ import { PaperSelect } from 'react-native-paper-select'
 import { SelectedItem } from 'react-native-paper-select/lib/typescript/interface/paperSelect.interface'
 import { useLoadingAction } from '../../hooks/useLoadingAction'
 import { useOnboardingStore } from '../../stores/onboardingStore'
+import { CommonActions } from '@react-navigation/native'
 
 export function OnboardingCountryScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, Routes.OnboardingCountryScreen>) {
   const [countries, setCountries] = useState<Country[]>([])
   const [isButtonEnabled, setIsButtonEnabled] = useState(false)
+  const [isSuccessDialogShown, showSuccessDialog] = useState(false)
+  const phoneNumberPrefix = useOnboardingStore((state) => state.phonePrefix)
+  const phoneNumber = useOnboardingStore((state) => state.phoneNumber)
+  const email = useOnboardingStore((state) => state.email)
+  const dateOfBirth = useOnboardingStore((state) => state.dateOfBirth)
   const selectedCountry = useOnboardingStore((state) => state.countryOfResidence)
   const setSelectedCountry = useOnboardingStore((state) => state.setCountryOfResidence)
-  const onNextPress = () => {}
+  const clearStore = useOnboardingStore((state) => state.clear)
 
   useEffect(() => {
     setIsButtonEnabled(selectedCountry !== null)
   }, [selectedCountry])
 
-  const { loadingAction } = useLoadingAction(
+  const { loadingAction: getCountriesLoadingAction } = useLoadingAction(
     AmkBankApi.getCountries()
       .then((data) => setCountries(data))
       .catch((reason) => console.log(reason)),
   )
+  const { loadingAction: createUserLoadingAction } = useLoadingAction(
+    AmkBankApi.createUser(
+      phoneNumberPrefix,
+      phoneNumber,
+      email,
+      dateOfBirth?.toDateString() ?? '',
+      selectedCountry?.id ?? '',
+    ),
+  )
+
   useEffect(() => {
-    loadingAction()
+    getCountriesLoadingAction()
   }, [])
+
+  const onNextPress = () => {
+    createUserLoadingAction()
+      .then(() => showSuccessDialog(true))
+      .catch((reason) => console.log(reason))
+  }
+
+  const onSuccessDialogConfirmed = () => {
+    clearStore()
+    const resetAction = CommonActions.reset({
+      index: 0,
+      routes: [
+        {
+          name: Routes.LoginScreen,
+        },
+      ],
+    })
+
+    navigation.dispatch(resetAction)
+  }
 
   return (
     <ScreenTemplate>
@@ -52,6 +88,18 @@ export function OnboardingCountryScreen({
           selectedArrayList={mapCountriesToDropdownList(selectedCountry ? [selectedCountry] : [])}
         />
       </View>
+
+      <Portal>
+        <Dialog visible={isSuccessDialogShown} dismissable={false}>
+          <Dialog.Title>{Strings.onboarding_success_title}</Dialog.Title>
+          <Dialog.Content>
+            <Text variant='bodyMedium'>{Strings.onboarding_success_message}</Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={onSuccessDialogConfirmed}>{Strings.ok}</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
 
       <View style={CommonStyles.flex1} />
 
