@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { AmkBankApiImpl } from './AmkBankApiImpl'
-import { config } from '../data/Config'
+import { config } from '../data/config'
 import { AmkBankMockImpl } from './AmkBankMockImpl'
 
 const axiosClient = axios.create({
