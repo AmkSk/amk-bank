@@ -128,4 +128,6 @@ export const Strings = {
   onboarding_country_placeholder: 'Pick your country',
   onboarding_success_title: 'Your account has been created',
   onboarding_success_message: 'Your account has been successfully created! Now you can log in.',
+  validation_empty_field: 'Please fill in this field',
+  validation_email: 'Please enter a valid email address',
 }
