@@ -5,77 +5,119 @@ import { ScreenTemplate } from '../ScreenTemplate'
 import { Button, Text, TextInput } from 'react-native-paper'
 import { Strings } from '../../i18n/Strings'
 import { StyleSheet, TextInput as RnTextInput, View } from 'react-native'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { CommonStyles } from '../../themes/CommonStyles'
 import { useOnboardingStore } from '../../stores/onboardingStore'
+import { Controller, useForm } from 'react-hook-form'
+import { ValidatedTextInput } from '../../components/ValidatedTextInput'
+import isMobilePhone from 'validator/lib/isMobilePhone'
+import isNumeric from 'validator/lib/isNumeric'
 
 export function OnboardingCreateAccountScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, Routes.OnboardingCreateAccountScreen>) {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [isButtonEnabled, setIsButtonEnabled] = useState(false)
 
   const phonePrefix = useOnboardingStore((state) => state.phonePrefix)
   const phoneNumber = useOnboardingStore((state) => state.phoneNumber)
   const setPhoneNumber = useOnboardingStore((state) => state.setPhoneNumber)
   const setPhonePrefix = useOnboardingStore((state) => state.setPhonePrefix)
 
-  useEffect(() => {
-    // TODO: Add phone number validation
-    setIsButtonEnabled(phonePrefix !== '' && phoneNumber !== '' && password !== '')
-  }, [phonePrefix, phoneNumber, password])
+  const { control, handleSubmit, formState } = useForm({
+    mode: 'onChange',
+    defaultValues: { phonePrefix, phoneNumber, password },
+  })
 
   const phoneInput = useRef<RnTextInput>(null)
   const pwdInput = useRef<RnTextInput>(null)
-  const onNextPress = () => navigation.navigate(Routes.OnboardingEmailScreen)
+
+  const onNextPress = () => {
+    handleSubmit((formData) => {
+      setPhonePrefix(formData.phonePrefix)
+      setPhoneNumber(formData.phoneNumber)
+      navigation.navigate(Routes.OnboardingEmailScreen)
+    })()
+  }
 
   return (
     <ScreenTemplate>
       <Text variant='headlineMedium'>{Strings.onboarding_create_account_title}</Text>
       <Text variant='bodyMedium'>{Strings.onboarding_create_account_subtitle}</Text>
       <View style={[CommonStyles.mt16, styles.phoneNumberInputs]}>
-        <TextInput
-          mode='outlined'
-          style={CommonStyles.flex1}
-          keyboardType='number-pad'
-          returnKeyType='next'
-          maxLength={3}
-          label={Strings.onboarding_create_account_placeholder_country_prefix}
-          placeholder={Strings.onboarding_create_account_placeholder_country_prefix}
-          onSubmitEditing={() => phoneInput.current?.focus()}
-          value={phonePrefix}
-          onChangeText={setPhonePrefix}
+        <Controller
+          name='phonePrefix'
+          render={({ field, fieldState }) => (
+            <TextInput
+              mode='outlined'
+              value={field.value}
+              error={fieldState.error !== undefined}
+              style={CommonStyles.flex1}
+              keyboardType='number-pad'
+              returnKeyType='next'
+              maxLength={3}
+              label={Strings.onboarding_create_account_placeholder_country_prefix}
+              placeholder={Strings.onboarding_create_account_placeholder_country_prefix}
+              onSubmitEditing={() => phoneInput.current?.focus()}
+              onChangeText={field.onChange}
+            />
+          )}
+          rules={{
+            required: Strings.validation_empty_field,
+            validate: (value: string) => isNumeric(value),
+          }}
+          control={control}
         />
-        <TextInput
-          ref={phoneInput}
-          mode='outlined'
-          style={[CommonStyles.ml8, styles.phoneNumberInput]}
-          keyboardType='number-pad'
-          returnKeyType='next'
-          label={Strings.onboarding_create_account_placeholder_phone_number}
-          placeholder={Strings.onboarding_create_account_placeholder_phone_number}
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-          onSubmitEditing={() => pwdInput.current?.focus()}
+
+        <Controller
+          name='phoneNumber'
+          render={({ field, fieldState }) => (
+            <ValidatedTextInput
+              ref={phoneInput}
+              field={field}
+              fieldState={fieldState}
+              style={[CommonStyles.ml8, styles.phoneNumberInput]}
+              keyboardType='number-pad'
+              returnKeyType='next'
+              label={Strings.onboarding_create_account_placeholder_phone_number}
+              placeholder={Strings.onboarding_create_account_placeholder_phone_number}
+              value={phoneNumber}
+              onSubmitEditing={() => pwdInput.current?.focus()}
+              onChangeText={field.onChange}
+            />
+          )}
+          rules={{
+            required: Strings.validation_empty_field,
+            validate: (value: string) => isMobilePhone(value) || Strings.validation_phone_number,
+          }}
+          control={control}
         />
       </View>
 
-      <TextInput
-        style={CommonStyles.mt8}
-        mode='outlined'
-        value={password}
-        ref={pwdInput}
-        onChangeText={setPassword}
-        secureTextEntry={!showPassword}
-        right={<TextInput.Icon icon='eye' onPress={() => setShowPassword(!showPassword)} />}
-        label={Strings.onboarding_create_account_placeholder_pwd}
-        placeholder={Strings.onboarding_create_account_placeholder_pwd}
+      <Controller
+        name='password'
+        render={({ field, fieldState }) => (
+          <ValidatedTextInput
+            field={field}
+            fieldState={fieldState}
+            style={CommonStyles.mt8}
+            mode='outlined'
+            value={password}
+            ref={pwdInput}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+            right={<TextInput.Icon icon='eye' onPress={() => setShowPassword(!showPassword)} />}
+            label={Strings.onboarding_create_account_placeholder_pwd}
+            placeholder={Strings.onboarding_create_account_placeholder_pwd}
+          />
+        )}
+        control={control}
+        rules={{ required: Strings.validation_empty_field }}
       />
 
       <View style={CommonStyles.flex1} />
 
-      <Button mode='contained' onPress={onNextPress} disabled={!isButtonEnabled}>
+      <Button mode='contained' onPress={onNextPress} disabled={!formState.isValid}>
         {Strings.button_next}
       </Button>
     </ScreenTemplate>
@@ -85,6 +127,7 @@ export function OnboardingCreateAccountScreen({
 const styles = StyleSheet.create({
   phoneNumberInputs: {
     flexDirection: 'row',
+    alignItems: 'flex-start',
   },
   phoneNumberInput: {
     flex: 3,

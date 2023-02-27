@@ -130,4 +130,5 @@ export const Strings = {
   onboarding_success_message: 'Your account has been successfully created! Now you can log in.',
   validation_empty_field: 'Please fill in this field',
   validation_email: 'Please enter a valid email address',
+  validation_phone_number: 'Please enter a phone number',
 }
