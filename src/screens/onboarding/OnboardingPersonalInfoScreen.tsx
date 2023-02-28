@@ -39,7 +39,7 @@ export function OnboardingPersonalInfoScreen({
     defaultValues: { name, surname },
   })
 
-  const onNextPress = () => {
+  const handleNextPress = () => {
     handleSubmit((formData) => {
       setName(formData.name)
       setSurname(formData.surname)
@@ -64,7 +64,6 @@ export function OnboardingPersonalInfoScreen({
             label={Strings.onboarding_personal_info_name_placeholder}
             placeholder={Strings.onboarding_personal_info_name_placeholder}
             onSubmitEditing={() => surnameInput.current?.focus()}
-            onChangeText={field.onChange}
           />
         )}
         control={control}
@@ -79,12 +78,10 @@ export function OnboardingPersonalInfoScreen({
             field={field}
             fieldState={fieldState}
             onSubmitEditing={() => dateOfBirthInput.current?.focus()}
-            mode='outlined'
             returnKeyType='next'
             style={CommonStyles.mt8}
             label={Strings.onboarding_personal_info_surname_placeholder}
             placeholder={Strings.onboarding_personal_info_surname_placeholder}
-            onChangeText={field.onChange}
           />
         )}
         control={control}
@@ -123,7 +120,7 @@ export function OnboardingPersonalInfoScreen({
 
       <View style={CommonStyles.flex1} />
 
-      <Button mode='contained' onPress={handleSubmit(onNextPress)} disabled={!isFormValid}>
+      <Button mode='contained' onPress={handleNextPress} disabled={!isFormValid}>
         {Strings.button_next}
       </Button>
     </ScreenTemplate>

@@ -32,10 +32,11 @@ export function OnboardingCreateAccountScreen({
   const phoneInput = useRef<RnTextInput>(null)
   const pwdInput = useRef<RnTextInput>(null)
 
-  const onNextPress = () => {
+  const handleNextPress = () => {
     handleSubmit((formData) => {
       setPhonePrefix(formData.phonePrefix)
       setPhoneNumber(formData.phoneNumber)
+      setPassword(formData.password)
       navigation.navigate(Routes.OnboardingEmailScreen)
     })()
   }
@@ -81,9 +82,7 @@ export function OnboardingCreateAccountScreen({
               returnKeyType='next'
               label={Strings.onboarding_create_account_placeholder_phone_number}
               placeholder={Strings.onboarding_create_account_placeholder_phone_number}
-              value={phoneNumber}
               onSubmitEditing={() => pwdInput.current?.focus()}
-              onChangeText={field.onChange}
             />
           )}
           rules={{
@@ -98,13 +97,10 @@ export function OnboardingCreateAccountScreen({
         name='password'
         render={({ field, fieldState }) => (
           <ValidatedTextInput
+            ref={pwdInput}
             field={field}
             fieldState={fieldState}
             style={CommonStyles.mt8}
-            mode='outlined'
-            value={password}
-            ref={pwdInput}
-            onChangeText={setPassword}
             secureTextEntry={!showPassword}
             right={<TextInput.Icon icon='eye' onPress={() => setShowPassword(!showPassword)} />}
             label={Strings.onboarding_create_account_placeholder_pwd}
@@ -117,7 +113,7 @@ export function OnboardingCreateAccountScreen({
 
       <View style={CommonStyles.flex1} />
 
-      <Button mode='contained' onPress={onNextPress} disabled={!formState.isValid}>
+      <Button mode='contained' onPress={handleNextPress} disabled={!formState.isValid}>
         {Strings.button_next}
       </Button>
     </ScreenTemplate>

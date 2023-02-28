@@ -3,7 +3,7 @@ import { TextInput as RnTextInput, View, ViewStyle } from 'react-native'
 import { ControllerFieldState, ControllerRenderProps } from 'react-hook-form'
 import React, { ForwardedRef } from 'react'
 
-type Props = TextInputProps & {
+type Props = Omit<TextInputProps, 'value' | 'error' | 'mode' | 'onChangeText'> & {
   style?: ViewStyle
   field: ControllerRenderProps<any, any>
   fieldState: ControllerFieldState

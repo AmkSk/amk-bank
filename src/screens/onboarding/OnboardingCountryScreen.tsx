@@ -52,7 +52,7 @@ export function OnboardingCountryScreen({
     getCountriesLoadingAction()
   }, [])
 
-  const onNextPress = () => {
+  const handleNextPress = () => {
     createUserLoadingAction()
       .then(() => showSuccessDialog(true))
       .catch((reason) => console.log(reason))
@@ -103,7 +103,7 @@ export function OnboardingCountryScreen({
 
       <View style={CommonStyles.flex1} />
 
-      <Button mode='contained' onPress={onNextPress} disabled={!isButtonEnabled}>
+      <Button mode='contained' onPress={handleNextPress} disabled={!isButtonEnabled}>
         {Strings.button_next}
       </Button>
     </ScreenTemplate>

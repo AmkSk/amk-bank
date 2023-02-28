@@ -22,7 +22,7 @@ export function OnboardingEmailScreen({
     defaultValues: { email },
   })
 
-  const onNextPress = () => {
+  const handleNextPress = () => {
     handleSubmit((formData) => {
       setEmail(formData.email)
       navigation.navigate(Routes.OnboardingPersonalInfoScreen)
@@ -43,7 +43,6 @@ export function OnboardingEmailScreen({
             label={Strings.onboarding_email_placeholder}
             placeholder={Strings.onboarding_email_placeholder}
             left={<TextInput.Icon icon='email' />}
-            onChangeText={field.onChange}
           />
         )}
         rules={{
@@ -56,7 +55,7 @@ export function OnboardingEmailScreen({
 
       <View style={CommonStyles.flex1} />
 
-      <Button mode='contained' onPress={onNextPress} disabled={!formState.isValid}>
+      <Button mode='contained' onPress={handleNextPress} disabled={!formState.isValid}>
         {Strings.button_next}
       </Button>
     </ScreenTemplate>
