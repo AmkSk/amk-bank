@@ -5,11 +5,13 @@ import { ScreenTemplate } from '../ScreenTemplate'
 import { Button, Text, TextInput } from 'react-native-paper'
 import { Strings } from '../../i18n/Strings'
 import { TextInput as RnTextInput, View } from 'react-native'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { CommonStyles } from '../../themes/CommonStyles'
 import { DatePickerModal, en, registerTranslation } from 'react-native-paper-dates'
 import { getLocales } from 'expo-localization'
 import { useOnboardingStore } from '../../stores/onboardingStore'
+import { Controller, useForm } from 'react-hook-form'
+import { ValidatedTextInput } from '../../components/ValidatedTextInput'
 
 registerTranslation('en', en)
 
@@ -21,7 +23,7 @@ export function OnboardingPersonalInfoScreen({
 }: NativeStackScreenProps<RootStackParamList, Routes.OnboardingPersonalInfoScreen>) {
   const locales = getLocales()
   const [isDatePickerVisible, showDatePicker] = useState(false)
-  const [isButtonEnabled, setIsButtonEnabled] = useState(false)
+
   const name = useOnboardingStore((store) => store.name)
   const surname = useOnboardingStore((store) => store.surname)
   const dateOfBirth = useOnboardingStore((store) => store.dateOfBirth)
@@ -32,37 +34,61 @@ export function OnboardingPersonalInfoScreen({
   const surnameInput = useRef<RnTextInput>(null)
   const dateOfBirthInput = useRef<RnTextInput>(null)
 
-  useEffect(() => {
-    setIsButtonEnabled(name !== '' && surname !== '')
-  }, [name, surname, dateOfBirth])
+  const { control, handleSubmit, formState } = useForm({
+    mode: 'onChange',
+    defaultValues: { name, surname },
+  })
 
-  const onNextPress = () => navigation.navigate(Routes.OnboardingCountryScreen)
+  const onNextPress = () => {
+    handleSubmit((formData) => {
+      setName(formData.name)
+      setSurname(formData.surname)
+      navigation.navigate(Routes.OnboardingCountryScreen)
+    })()
+  }
+
+  const isFormValid = formState.isValid && dateOfBirth != null
 
   return (
     <ScreenTemplate>
       <Text variant='headlineMedium'>{Strings.onboarding_personal_info_title}</Text>
       <Text variant='bodyMedium'>{Strings.onboarding_personal_info_subtitle}</Text>
-      <TextInput
-        mode='outlined'
-        returnKeyType='next'
-        style={CommonStyles.mt8}
-        label={Strings.onboarding_personal_info_name_placeholder}
-        placeholder={Strings.onboarding_personal_info_name_placeholder}
-        value={name}
-        onSubmitEditing={() => surnameInput.current?.focus()}
-        onChangeText={setName}
+      <Controller
+        name='name'
+        render={({ field, fieldState }) => (
+          <ValidatedTextInput
+            field={field}
+            fieldState={fieldState}
+            returnKeyType='next'
+            style={CommonStyles.mt8}
+            label={Strings.onboarding_personal_info_name_placeholder}
+            placeholder={Strings.onboarding_personal_info_name_placeholder}
+            onSubmitEditing={() => surnameInput.current?.focus()}
+            onChangeText={field.onChange}
+          />
+        )}
+        control={control}
+        rules={{ required: Strings.validation_empty_field }}
       />
 
-      <TextInput
-        ref={surnameInput}
-        onSubmitEditing={() => dateOfBirthInput.current?.focus()}
-        mode='outlined'
-        returnKeyType='next'
-        style={CommonStyles.mt8}
-        label={Strings.onboarding_personal_info_surname_placeholder}
-        placeholder={Strings.onboarding_personal_info_surname_placeholder}
-        value={surname}
-        onChangeText={setSurname}
+      <Controller
+        name='surname'
+        render={({ field, fieldState }) => (
+          <ValidatedTextInput
+            ref={surnameInput}
+            field={field}
+            fieldState={fieldState}
+            onSubmitEditing={() => dateOfBirthInput.current?.focus()}
+            mode='outlined'
+            returnKeyType='next'
+            style={CommonStyles.mt8}
+            label={Strings.onboarding_personal_info_surname_placeholder}
+            placeholder={Strings.onboarding_personal_info_surname_placeholder}
+            onChangeText={field.onChange}
+          />
+        )}
+        control={control}
+        rules={{ required: Strings.validation_empty_field }}
       />
 
       <TextInput
@@ -97,7 +123,7 @@ export function OnboardingPersonalInfoScreen({
 
       <View style={CommonStyles.flex1} />
 
-      <Button mode='contained' onPress={onNextPress} disabled={!isButtonEnabled}>
+      <Button mode='contained' onPress={handleSubmit(onNextPress)} disabled={!isFormValid}>
         {Strings.button_next}
       </Button>
     </ScreenTemplate>
