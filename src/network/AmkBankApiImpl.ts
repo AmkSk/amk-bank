@@ -30,4 +30,12 @@ export class AmkBankApiImpl implements AmkBankApi {
     })
     return response.data
   }
+
+  async logIn(username: string, passwordHash: string): Promise<void> {
+    const response = await this.axiosClient.post<void>('/login', {
+      username,
+      passwordHash,
+    })
+    return response.data
+  }
 }

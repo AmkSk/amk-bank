@@ -16,4 +16,11 @@ export default interface AmkBankApi {
     dateOfBirth: string,
     countryId: string,
   ): Promise<void>
+
+  /**
+   * Sends a request to log in
+   * @param username email or phone number
+   * @param passwordHash hash of a password
+   */
+  logIn(username: string, passwordHash: string): Promise<void>
 }
