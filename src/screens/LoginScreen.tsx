@@ -1,9 +1,11 @@
-import { StyleSheet, TextInput as RnTextInput, View } from 'react-native'
+import { Keyboard, StyleSheet, TextInput as RnTextInput, View } from 'react-native'
 import { Button, MD3Theme, Text, TextInput, useTheme } from 'react-native-paper'
 import { CommonStyles } from '../themes/CommonStyles'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Strings } from '../i18n/Strings'
 import { ScreenTemplate } from './ScreenTemplate'
+import { AmkBankApi } from '../network/AmkBankClient'
+import { useLoadingAction } from '../hooks/useLoadingAction'
 
 export default function LoginScreen() {
   const theme = useTheme()
@@ -24,7 +26,14 @@ export default function LoginScreen() {
     [phoneNumber, phonePrefix, password],
   )
 
-  const handleLoginPress = () => {}
+  const { loadingAction: loginAction } = useLoadingAction(AmkBankApi.logIn(phonePrefix + phoneNumber, password))
+
+  const handleLoginPress = () => {
+    Keyboard.dismiss()
+    loginAction()
+      .then(() => console.log('LOGIN SUCCESSFUL'))
+      .catch(() => console.error('LOGIN FAILED'))
+  }
   const handleBioLoginPress = () => {}
 
   return (
