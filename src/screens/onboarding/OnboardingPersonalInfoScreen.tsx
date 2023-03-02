@@ -57,8 +57,9 @@ export function OnboardingPersonalInfoScreen({
         name='name'
         render={({ field, fieldState }) => (
           <ValidatedTextInput
-            field={field}
-            fieldState={fieldState}
+            value={field.value}
+            onChangeText={field.onChange}
+            errorMessage={fieldState.error?.message}
             returnKeyType='next'
             style={CommonStyles.mt8}
             label={Strings.onboarding_personal_info_name_placeholder}
@@ -75,8 +76,9 @@ export function OnboardingPersonalInfoScreen({
         render={({ field, fieldState }) => (
           <ValidatedTextInput
             ref={surnameInput}
-            field={field}
-            fieldState={fieldState}
+            value={field.value}
+            onChangeText={field.onChange}
+            errorMessage={fieldState.error?.message}
             onSubmitEditing={() => dateOfBirthInput.current?.focus()}
             returnKeyType='next'
             style={CommonStyles.mt8}

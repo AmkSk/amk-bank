@@ -35,9 +35,10 @@ export function OnboardingEmailScreen({
       <Controller
         render={({ field, fieldState }) => (
           <ValidatedTextInput
-            field={field}
+            value={field.value}
+            onChangeText={field.onChange}
+            errorMessage={fieldState.error?.message}
             style={CommonStyles.mt16}
-            fieldState={fieldState}
             keyboardType='email-address'
             returnKeyType='done'
             label={Strings.onboarding_email_placeholder}

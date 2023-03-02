@@ -75,8 +75,9 @@ export function OnboardingCreateAccountScreen({
           render={({ field, fieldState }) => (
             <ValidatedTextInput
               ref={phoneInput}
-              field={field}
-              fieldState={fieldState}
+              value={field.value}
+              onChangeText={field.onChange}
+              errorMessage={fieldState.error?.message}
               style={[CommonStyles.ml8, styles.phoneNumberInput]}
               keyboardType='number-pad'
               returnKeyType='next'
@@ -98,8 +99,9 @@ export function OnboardingCreateAccountScreen({
         render={({ field, fieldState }) => (
           <ValidatedTextInput
             ref={pwdInput}
-            field={field}
-            fieldState={fieldState}
+            value={field.value}
+            onChangeText={field.onChange}
+            errorMessage={fieldState.error?.message}
             style={CommonStyles.mt8}
             secureTextEntry={!showPassword}
             right={<TextInput.Icon icon='eye' onPress={() => setShowPassword(!showPassword)} />}

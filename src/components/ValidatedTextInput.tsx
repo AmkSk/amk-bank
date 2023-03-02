@@ -3,25 +3,17 @@ import { TextInput as RnTextInput, View, ViewStyle } from 'react-native'
 import { ControllerFieldState, ControllerRenderProps } from 'react-hook-form'
 import React, { ForwardedRef } from 'react'
 
-type Props = Omit<TextInputProps, 'value' | 'error' | 'mode' | 'onChangeText'> & {
+type Props = Omit<TextInputProps, 'error' | 'mode'> & {
   style?: ViewStyle
-  field: ControllerRenderProps<any, any>
-  fieldState: ControllerFieldState
+  errorMessage?: string
 }
 
 export const ValidatedTextInput = React.forwardRef(
-  ({ style, field, fieldState, ...textInputProps }: Props, ref: ForwardedRef<RnTextInput>) => {
+  ({ style, errorMessage, ...textInputProps }: Props, ref: ForwardedRef<RnTextInput>) => {
     return (
       <View style={style}>
-        <TextInput
-          ref={ref}
-          {...textInputProps}
-          mode='outlined'
-          value={field.value}
-          error={fieldState.error?.message !== undefined}
-          onChangeText={field.onChange}
-        />
-        {fieldState.error !== undefined && <HelperText type='error'>{fieldState.error?.message}</HelperText>}
+        <TextInput ref={ref} {...textInputProps} mode='outlined' error={errorMessage !== undefined} />
+        {errorMessage !== undefined && <HelperText type='error'>{errorMessage}</HelperText>}
       </View>
     )
   },
