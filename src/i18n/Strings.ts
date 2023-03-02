@@ -5,9 +5,9 @@ export const Strings = {
   onboarding_page_1: 'Trusted by millions of people, part of one part',
   onboarding_page_2: 'Spend money abroad, and track your expense',
   onboarding_page_3: 'Receive Money from anywhere in the world',
-  welcome_title: 'Create your Coinpay account',
+  welcome_title: 'Create your Amk Bank account',
   welcome_subtitle:
-    'Coinpay is a powerful tool that allows you to easily send, receive, and track all your transactions.',
+    'Amk Bank is a powerful tool that allows you to easily send, receive, and track all your transactions.',
   welcome_sign_up: 'Sign up',
   welcome_log_in: 'Log in',
   welcome_toc: `By continuing you accept our `,
@@ -131,4 +131,8 @@ export const Strings = {
   validation_empty_field: 'Please fill in this field',
   validation_email: 'Please enter a valid email address',
   validation_phone_number: 'Please enter a phone number',
+  login: 'Log in',
+  login_title: 'Log in to Amk Bank',
+  login_subtitle: 'Enter your registered mobile number to log in.',
+  login_biometric_auth: 'Biometric authentication',
 }
