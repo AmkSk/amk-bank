@@ -2,6 +2,8 @@ export const Strings = {
   button_next: 'Next',
   and: 'and',
   ok: 'OK',
+  yes: 'Yes',
+  no: 'No',
   onboarding_page_1: 'Trusted by millions of people, part of one part',
   onboarding_page_2: 'Spend money abroad, and track your expense',
   onboarding_page_3: 'Receive Money from anywhere in the world',
@@ -135,4 +137,6 @@ export const Strings = {
   login_title: 'Log in to Amk Bank',
   login_subtitle: 'Enter your registered mobile number to log in.',
   login_biometric_auth: 'Biometric authentication',
+  login_biometric_auth_dialog_title: 'Biometric authentication',
+  login_biometric_auth_dialog_message: 'Do you wish to log in using Face ID / Fingerprint in the future?',
 }
