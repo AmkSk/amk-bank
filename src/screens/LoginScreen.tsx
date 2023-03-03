@@ -76,7 +76,7 @@ export default function LoginScreen() {
         style={CommonStyles.mt8}
         secureTextEntry={!showPassword}
         left={<TextInput.Icon icon='lock' />}
-        right={<TextInput.Icon icon='eye' onPress={() => setShowPassword(!showPassword)} />}
+        right={<TextInput.Icon icon={showPassword ? 'eye-off' : 'eye'} onPress={() => setShowPassword(!showPassword)} />}
         label={Strings.onboarding_create_account_placeholder_pwd}
         placeholder={Strings.onboarding_create_account_placeholder_pwd}
       />
