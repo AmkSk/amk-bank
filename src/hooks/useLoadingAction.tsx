@@ -20,7 +20,7 @@ interface LoadingContextProps {
   showLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const LoadingContext = createContext<LoadingContextProps>({
+export const LoadingContext = createContext<LoadingContextProps>({
   isLoading: false,
   showLoading: () => {},
 })
