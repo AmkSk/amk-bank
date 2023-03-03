@@ -11,4 +11,6 @@ export type RootStackParamList = {
   [Routes.OnboardingEmailScreen]: undefined
   [Routes.OnboardingPersonalInfoScreen]: undefined
   [Routes.OnboardingCountryScreen]: undefined
+  // Authenticated Screens
+  [Routes.DashboardScreen]: undefined
 }

@@ -28,6 +28,7 @@ import { OnboardingEmailScreen } from './src/screens/onboarding/OnboardingEmailS
 import { OnboardingPersonalInfoScreen } from './src/screens/onboarding/OnboardingPersonalInfoScreen'
 import { OnboardingCountryScreen } from './src/screens/onboarding/OnboardingCountryScreen'
 import { LoadingContextProvider } from './src/hooks/useLoadingAction'
+import { DashboardScreen } from './src/screens/DashboardScreen'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -74,6 +75,7 @@ export default function App() {
                   )}
                   <RootStack.Screen name={Routes.WelcomeScreen} component={WelcomeScreen} options={{ title: '' }} />
                   <RootStack.Screen name={Routes.LoginScreen} component={LoginScreen} options={{ title: '' }} />
+                  <RootStack.Screen name={Routes.DashboardScreen} component={DashboardScreen} options={{ title: '' }} />
                   <RootStack.Screen
                     name={Routes.OnboardingCreateAccountScreen}
                     component={OnboardingCreateAccountScreen}
