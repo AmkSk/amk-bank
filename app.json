@@ -29,6 +29,14 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "jsEngine": "hermes"
+    "jsEngine": "hermes",
+    "plugins": [
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Amk Bank app uses biometric authentication to verify user identity and protect sensitive data."
+        }
+      ]
+    ]
   }
 }
