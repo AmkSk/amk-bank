@@ -11,6 +11,7 @@ import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { RootStackParamList } from '../navigation/NavigationTypes'
 import { Routes } from '../navigation/Routes'
 import { LoadingContext } from '../hooks/useLoadingAction'
+import * as SecureStore from 'expo-secure-store'
 
 export default function LoginScreen({ navigation }: NativeStackScreenProps<RootStackParamList, Routes.LoginScreen>) {
   const theme = useTheme()
@@ -68,10 +69,16 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
       if (result.success) {
         showLoading(true)
 
-        // TODO get credentials from Secure storage
-        AmkBankApi.logIn('', '')
-          .then(() => handleSuccessfulLogin())
-          .catch(() => handleFailedLogin())
+        Promise.all([
+          SecureStore.getItemAsync(USER_PREFERENCES.username),
+          SecureStore.getItemAsync(USER_PREFERENCES.password),
+        ])
+          .then(([username, password]) =>
+            AmkBankApi.logIn(username ?? '', password ?? '')
+              .then(() => handleSuccessfulLogin())
+              .catch(() => handleFailedLogin()),
+          )
+          .catch(() => handleFailedLogin('Please use your username and your password'))
       } else {
         handleFailedLogin(result.error)
       }
@@ -99,8 +106,10 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
       setBioLoginDialogVisible(false)
       LocalAuthentication.authenticateAsync().then((result) => {
         if (result.success) {
-          // TODO Store credentials in secure storage
-          handleSuccessfulLogin()
+          Promise.all([
+            SecureStore.setItemAsync(USER_PREFERENCES.username, phonePrefix + phoneNumber),
+            SecureStore.setItemAsync(USER_PREFERENCES.password, password),
+          ]).then(() => handleSuccessfulLogin())
         } else {
           handleFailedLogin(result.error)
         }

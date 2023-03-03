@@ -26,6 +26,8 @@ export class AmkBankMockImpl implements AmkBankApi {
   }
 
   async logIn(username: string, passwordHash: string): Promise<void> {
+    console.log(`Calling logIn request with username: ${username} and password hash: ${passwordHash}`)
+
     await this.delay(REQUEST_DELAY)
     return Promise.resolve(undefined)
   }
