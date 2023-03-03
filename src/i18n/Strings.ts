@@ -139,4 +139,5 @@ export const Strings = {
   login_biometric_auth: 'Biometric authentication',
   login_biometric_auth_dialog_title: 'Biometric authentication',
   login_biometric_auth_dialog_message: 'Do you wish to log in using Face ID / Fingerprint in the future?',
+  login_biometric_auth_error: 'Please log in with your phone number and your password',
 }

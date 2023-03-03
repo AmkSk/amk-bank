@@ -13,6 +13,8 @@ import { Routes } from '../navigation/Routes'
 import { LoadingContext } from '../hooks/useLoadingAction'
 import * as SecureStore from 'expo-secure-store'
 
+const AUTH_RESULT_ERROR_CANCEL = 'user_cancel'
+
 export default function LoginScreen({ navigation }: NativeStackScreenProps<RootStackParamList, Routes.LoginScreen>) {
   const theme = useTheme()
   const styles = useMemo(() => createStyleSheet(theme), [theme])
@@ -35,27 +37,24 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
     [phoneNumber, phonePrefix, password],
   )
 
-  AsyncStorage.getItem(USER_PREFERENCES.biometricAuthSetUp).then((value) => {
-    if (value === 'true') {
-      showBioAuthButton(true)
-    }
-  })
+  AsyncStorage.getItem(USER_PREFERENCES.biometricAuthSetUp).then((value) => showBioAuthButton(value === 'true'))
 
   const handleLoginButtonPress = () => {
     Keyboard.dismiss()
     showLoading(true)
 
     AmkBankApi.logIn(phonePrefix + phoneNumber, password)
-      .then(() => setUpBiometricAuthentication())
+      .then(() => handleBiometricAuthenticationSetup())
       .catch(() => handleFailedLogin())
   }
 
-  const setUpBiometricAuthentication = () => {
+  const handleBiometricAuthenticationSetup = () => {
     Promise.all([
       LocalAuthentication.isEnrolledAsync(),
       AsyncStorage.getItem(USER_PREFERENCES.biometricAuthSetUp),
-    ]).then(([isBiometricAuthAvailable, isBiometricAuthSetUp]) => {
-      if (isBiometricAuthAvailable && isBiometricAuthSetUp !== 'true') {
+      AsyncStorage.getItem(USER_PREFERENCES.doNotShowBiometricAuthSetupDialog),
+    ]).then(([isBiometricAuthAvailable, isBiometricAuthSetUp, doNotShowBiometricAuthSetupDialog]) => {
+      if (isBiometricAuthAvailable && isBiometricAuthSetUp !== 'true' && doNotShowBiometricAuthSetupDialog !== 'true') {
         showLoading(false)
         setBioLoginDialogVisible(true)
       } else {
@@ -78,7 +77,7 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
               .then(() => handleSuccessfulLogin())
               .catch(() => handleFailedLogin()),
           )
-          .catch(() => handleFailedLogin('Please use your username and your password'))
+          .catch(() => handleFailedLogin(Strings.login_biometric_auth_error))
       } else {
         handleFailedLogin(result.error)
       }
@@ -91,7 +90,11 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
   }
   const handleFailedLogin = (error?: string) => {
     showLoading(false)
-    alert(`LOGIN FAILED! ${error}`)
+
+    // TODO introduce better error handling
+    if (error !== AUTH_RESULT_ERROR_CANCEL) {
+      alert(`LOGIN FAILED! ${error}`)
+    }
   }
 
   const handleBiometricLoginSetupDialogNegativeAction = () => {
@@ -102,18 +105,17 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
   }
 
   const handleBiometricLoginSetupDialogPositiveAction = () => {
-    AsyncStorage.setItem(USER_PREFERENCES.biometricAuthSetUp, 'true').then(() => {
-      setBioLoginDialogVisible(false)
-      LocalAuthentication.authenticateAsync().then((result) => {
-        if (result.success) {
-          Promise.all([
-            SecureStore.setItemAsync(USER_PREFERENCES.username, phonePrefix + phoneNumber),
-            SecureStore.setItemAsync(USER_PREFERENCES.password, password),
-          ]).then(() => handleSuccessfulLogin())
-        } else {
-          handleFailedLogin(result.error)
-        }
-      })
+    setBioLoginDialogVisible(false)
+    LocalAuthentication.authenticateAsync().then((result) => {
+      if (result.success) {
+        Promise.all([
+          SecureStore.setItemAsync(USER_PREFERENCES.username, phonePrefix + phoneNumber),
+          SecureStore.setItemAsync(USER_PREFERENCES.password, password),
+          AsyncStorage.setItem(USER_PREFERENCES.biometricAuthSetUp, 'true'),
+        ]).then(() => handleSuccessfulLogin())
+      } else {
+        handleFailedLogin(result.error)
+      }
     })
   }
 
