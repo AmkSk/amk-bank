@@ -88,7 +88,7 @@ export default function LoginScreen() {
           icon='fingerprint'
           onPress={handleBioLoginPress}
         >
-          {Strings.login_biometric_auth}{' '}
+          {Strings.login_biometric_auth}
         </Button>
       )}
 
