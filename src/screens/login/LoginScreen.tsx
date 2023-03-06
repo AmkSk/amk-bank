@@ -62,11 +62,11 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
   }
 
   const handleBiometricAuthenticationSetup = async () => {
-    const isBiometricAuthAvailable = await LocalAuthentication.isEnrolledAsync()
-    const isBiometricAuthSetUp = await AsyncStorage.getItem(USER_PREFERENCES.biometricAuthSetUp)
-    const doNotShowBiometricAuthSetupDialog = await AsyncStorage.getItem(
-      USER_PREFERENCES.doNotShowBiometricAuthSetupDialog,
-    )
+    const [isBiometricAuthAvailable, isBiometricAuthSetUp, doNotShowBiometricAuthSetupDialog] = await Promise.all([
+      LocalAuthentication.isEnrolledAsync(),
+      AsyncStorage.getItem(USER_PREFERENCES.biometricAuthSetUp),
+      AsyncStorage.getItem(USER_PREFERENCES.doNotShowBiometricAuthSetupDialog),
+    ])
 
     if (isBiometricAuthAvailable && isBiometricAuthSetUp !== 'true' && doNotShowBiometricAuthSetupDialog !== 'true') {
       setBioLoginDialogVisible(true)
@@ -90,8 +90,10 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
     const result = await LocalAuthentication.authenticateAsync()
     if (result.success) {
       try {
-        const username = await SecureStore.getItemAsync(USER_PREFERENCES.username)
-        const password = await SecureStore.getItemAsync(USER_PREFERENCES.password)
+        const [username, password] = await Promise.all([
+          SecureStore.getItemAsync(USER_PREFERENCES.username),
+          SecureStore.getItemAsync(USER_PREFERENCES.password),
+        ])
 
         showLoading(true)
         const success = await callLoginRequest(username ?? '', password ?? '')
@@ -183,6 +185,7 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
     </ScreenTemplate>
   )
 }
+
 const createStyleSheet = (theme: MD3Theme) => {
   return StyleSheet.create({
     container: {
