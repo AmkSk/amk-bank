@@ -34,20 +34,6 @@ export function OnboardingCountryScreen({
     setIsButtonEnabled(selectedCountry !== null)
   }, [selectedCountry])
 
-  const callCreateUser = async () => {
-    try {
-      await AmkBankApi.createUser(
-        phoneNumberPrefix,
-        phoneNumber,
-        email,
-        dateOfBirth?.toDateString() ?? '',
-        selectedCountry?.id ?? '',
-      )
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
   useEffect(() => {
     const callGetCountries = async () => {
       showLoading(true)
@@ -65,9 +51,19 @@ export function OnboardingCountryScreen({
 
   const handleNextPress = async () => {
     showLoading(true)
-    await callCreateUser()
+    try {
+      await AmkBankApi.createUser(
+        phoneNumberPrefix,
+        phoneNumber,
+        email,
+        dateOfBirth?.toDateString() ?? '',
+        selectedCountry?.id ?? '',
+      )
+      showSuccessDialog(true)
+    } catch (error) {
+      console.error(error)
+    }
     showLoading(false)
-    showSuccessDialog(true)
   }
 
   const onSuccessDialogConfirmed = () => {
