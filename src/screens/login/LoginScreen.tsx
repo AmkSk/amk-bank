@@ -9,7 +9,7 @@ import * as LocalAuthentication from 'expo-local-authentication'
 import { USER_PREFERENCES } from '../../constants'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { RootStackParamList, Routes } from '../../navigation/navigationTypes'
-import { LoadingContext } from '../../hooks/useLoadingAction'
+import { LoadingContext } from '../../hooks/loadingContext'
 import * as SecureStore from 'expo-secure-store'
 import { BiometricAuthDialog } from './BiometricAuthDialog'
 

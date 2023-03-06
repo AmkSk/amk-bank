@@ -1,4 +1,4 @@
-import React, { createContext, PropsWithChildren, useContext, useState } from 'react'
+import React, { createContext, PropsWithChildren, useState } from 'react'
 import { LoadingModal } from '../components/LoadingModal'
 import { Portal } from 'react-native-paper'
 

@@ -26,7 +26,7 @@ import { OnboardingCreateAccountScreen } from './src/screens/onboarding/Onboardi
 import { OnboardingEmailScreen } from './src/screens/onboarding/OnboardingEmailScreen'
 import { OnboardingPersonalInfoScreen } from './src/screens/onboarding/OnboardingPersonalInfoScreen'
 import { OnboardingCountryScreen } from './src/screens/onboarding/OnboardingCountryScreen'
-import { LoadingContextProvider } from './src/hooks/useLoadingAction'
+import { LoadingContextProvider } from './src/hooks/loadingContext'
 import { DashboardScreen } from './src/screens/DashboardScreen'
 
 SplashScreen.preventAutoHideAsync()
