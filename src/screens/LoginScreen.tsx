@@ -37,7 +37,9 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
     [phoneNumber, phonePrefix, password],
   )
 
-  AsyncStorage.getItem(USER_PREFERENCES.biometricAuthSetUp).then((value) => showBioAuthButton(value === 'true'))
+  useEffect(() => {
+    AsyncStorage.getItem(USER_PREFERENCES.biometricAuthSetUp).then((value) => showBioAuthButton(value === 'true'))
+  }, [])
 
   const handleLoginButtonPress = () => {
     Keyboard.dismiss()
