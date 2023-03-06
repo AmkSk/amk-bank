@@ -36,7 +36,7 @@ export function OnboardingCountryScreen({
 
   const callCreateUser = async () => {
     try {
-      return await AmkBankApi.createUser(
+      await AmkBankApi.createUser(
         phoneNumberPrefix,
         phoneNumber,
         email,
@@ -61,7 +61,7 @@ export function OnboardingCountryScreen({
     }
 
     callGetCountries()
-  }, [])
+  }, [showLoading])
 
   const handleNextPress = async () => {
     showLoading(true)
