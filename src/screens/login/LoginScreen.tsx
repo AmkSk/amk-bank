@@ -3,7 +3,7 @@ import { Button, MD3Theme, Text, TextInput, useTheme } from 'react-native-paper'
 import { CommonStyles } from '../../themes/CommonStyles'
 import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Strings } from '../../i18n/Strings'
-import { ScreenTemplate } from './../ScreenTemplate'
+import { ScreenTemplate } from '../ScreenTemplate'
 import { AmkBankApi } from '../../network/AmkBankClient'
 import * as LocalAuthentication from 'expo-local-authentication'
 import { USER_PREFERENCES } from '../../Constants'
@@ -24,79 +24,88 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
   const [phoneNumber, setPhoneNumber] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [isLoginButtonEnabled, enableLoginButton] = useState(false)
   const [isBioAuthButtonVisible, showBioAuthButton] = useState(false)
   const [isBioLoginDialogVisible, setBioLoginDialogVisible] = useState(false)
+  const enableLoginButton = phonePrefix !== '' && phoneNumber !== '' && password !== ''
 
   const { showLoading } = useContext(LoadingContext)
 
   const phoneInput = useRef<RnTextInput>(null)
   const pwdInput = useRef<RnTextInput>(null)
 
-  useEffect(
-    () => enableLoginButton(phonePrefix !== '' && phoneNumber !== '' && password !== ''),
-    [phoneNumber, phonePrefix, password],
-  )
-
   useEffect(() => {
-    AsyncStorage.getItem(USER_PREFERENCES.biometricAuthSetUp).then((value) => showBioAuthButton(value === 'true'))
+    const fetchBioAuthSetUp = async () => {
+      const value = await AsyncStorage.getItem(USER_PREFERENCES.biometricAuthSetUp)
+      showBioAuthButton(value === 'true')
+    }
+    fetchBioAuthSetUp()
   }, [])
 
-  const handleLoginButtonPress = () => {
+  const callLoginRequest = async (username: string, password: string) => {
+    try {
+      await AmkBankApi.logIn(username, password)
+      return true
+    } catch {
+      showErrorDialog(Strings.login_request_error)
+      return false
+    }
+  }
+
+  const handleLoginButtonPress = async () => {
     Keyboard.dismiss()
     showLoading(true)
-
-    AmkBankApi.logIn(phonePrefix + phoneNumber, password)
-      .then(() => handleBiometricAuthenticationSetup())
-      .catch(() => handleFailedLogin())
-  }
-
-  const handleBiometricAuthenticationSetup = () => {
-    Promise.all([
-      LocalAuthentication.isEnrolledAsync(),
-      AsyncStorage.getItem(USER_PREFERENCES.biometricAuthSetUp),
-      AsyncStorage.getItem(USER_PREFERENCES.doNotShowBiometricAuthSetupDialog),
-    ]).then(([isBiometricAuthAvailable, isBiometricAuthSetUp, doNotShowBiometricAuthSetupDialog]) => {
-      if (isBiometricAuthAvailable && isBiometricAuthSetUp !== 'true' && doNotShowBiometricAuthSetupDialog !== 'true') {
-        showLoading(false)
-        setBioLoginDialogVisible(true)
-      } else {
-        handleSuccessfulLogin()
-      }
-    })
-  }
-
-  const startBiometricLogin = () => {
-    LocalAuthentication.authenticateAsync().then((result) => {
-      if (result.success) {
-        showLoading(true)
-
-        Promise.all([
-          SecureStore.getItemAsync(USER_PREFERENCES.username),
-          SecureStore.getItemAsync(USER_PREFERENCES.password),
-        ])
-          .then(([username, password]) =>
-            AmkBankApi.logIn(username ?? '', password ?? '')
-              .then(() => handleSuccessfulLogin())
-              .catch(() => handleFailedLogin()),
-          )
-          .catch(() => handleFailedLogin(Strings.login_biometric_auth_error))
-      } else {
-        handleFailedLogin(result.error)
-      }
-    })
-  }
-
-  const handleSuccessfulLogin = () => {
+    const success = await callLoginRequest(phonePrefix + phoneNumber, password)
     showLoading(false)
+
+    if (success) {
+      await handleBiometricAuthenticationSetup()
+    }
+  }
+
+  const handleBiometricAuthenticationSetup = async () => {
+    const isBiometricAuthAvailable = await LocalAuthentication.isEnrolledAsync()
+    const isBiometricAuthSetUp = await AsyncStorage.getItem(USER_PREFERENCES.biometricAuthSetUp)
+    const doNotShowBiometricAuthSetupDialog = await AsyncStorage.getItem(
+      USER_PREFERENCES.doNotShowBiometricAuthSetupDialog,
+    )
+
+    if (isBiometricAuthAvailable && isBiometricAuthSetUp !== 'true' && doNotShowBiometricAuthSetupDialog !== 'true') {
+      setBioLoginDialogVisible(true)
+    } else {
+      onLoginSuccessful()
+    }
+  }
+
+  const onLoginSuccessful = () => {
     navigation.replace(Routes.DashboardScreen)
   }
-  const handleFailedLogin = (error?: string) => {
-    showLoading(false)
 
-    // TODO introduce better error handling
+  const showErrorDialog = (error?: string) => {
     if (error !== AUTH_RESULT_ERROR_CANCEL) {
+      // TODO introduce better error presentation
       alert(`LOGIN FAILED! ${error}`)
+    }
+  }
+
+  const startBiometricLogin = async () => {
+    const result = await LocalAuthentication.authenticateAsync()
+    if (result.success) {
+      try {
+        const username = await SecureStore.getItemAsync(USER_PREFERENCES.username)
+        const password = await SecureStore.getItemAsync(USER_PREFERENCES.password)
+
+        showLoading(true)
+        const success = await callLoginRequest(username ?? '', password ?? '')
+        showLoading(false)
+
+        if (success) {
+          onLoginSuccessful()
+        }
+      } catch {
+        showErrorDialog(Strings.login_biometric_auth_error)
+      }
+    } else {
+      showErrorDialog(result.error)
     }
   }
 
@@ -160,7 +169,7 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
 
       <View style={CommonStyles.flex1} />
 
-      <Button mode='contained' onPress={handleLoginButtonPress} disabled={!isLoginButtonEnabled}>
+      <Button mode='contained' onPress={handleLoginButtonPress} disabled={!enableLoginButton}>
         {Strings.login}
       </Button>
 
@@ -169,8 +178,8 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
         username={phonePrefix + phonePrefix}
         password={password}
         dismissDialog={() => setBioLoginDialogVisible(false)}
-        onSuccess={handleSuccessfulLogin}
-        onFailure={handleFailedLogin}
+        onSuccess={onLoginSuccessful}
+        onFailure={showErrorDialog}
       />
     </ScreenTemplate>
   )
