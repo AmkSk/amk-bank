@@ -11,7 +11,7 @@ import { Provider as PaperProvider } from 'react-native-paper'
 
 import { Routes } from './src/navigation/Routes'
 import IntroScreen from './src/screens/IntroScreen'
-import LoginScreen from './src/screens/LoginScreen'
+import LoginScreen from './src/screens/login/LoginScreen'
 import { theme } from './src/themes/Theme'
 import { RootStackParamList } from './src/navigation/NavigationTypes'
 import { SafeAreaProvider } from 'react-native-safe-area-context'

@@ -1,17 +1,18 @@
 import { AsyncStorage, Keyboard, StyleSheet, TextInput as RnTextInput, View } from 'react-native'
-import { Button, Dialog, MD3Theme, Portal, Text, TextInput, useTheme } from 'react-native-paper'
-import { CommonStyles } from '../themes/CommonStyles'
+import { Button, MD3Theme, Text, TextInput, useTheme } from 'react-native-paper'
+import { CommonStyles } from '../../themes/CommonStyles'
 import { useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { Strings } from '../i18n/Strings'
-import { ScreenTemplate } from './ScreenTemplate'
-import { AmkBankApi } from '../network/AmkBankClient'
+import { Strings } from '../../i18n/Strings'
+import { ScreenTemplate } from './../ScreenTemplate'
+import { AmkBankApi } from '../../network/AmkBankClient'
 import * as LocalAuthentication from 'expo-local-authentication'
-import { USER_PREFERENCES } from '../Constants'
+import { USER_PREFERENCES } from '../../Constants'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
-import { RootStackParamList } from '../navigation/NavigationTypes'
-import { Routes } from '../navigation/Routes'
-import { LoadingContext } from '../hooks/useLoadingAction'
+import { RootStackParamList } from '../../navigation/NavigationTypes'
+import { Routes } from '../../navigation/Routes'
+import { LoadingContext } from '../../hooks/useLoadingAction'
 import * as SecureStore from 'expo-secure-store'
+import { BiometricAuthDialog } from './BiometricAuthDialog'
 
 const AUTH_RESULT_ERROR_CANCEL = 'user_cancel'
 
@@ -99,28 +100,6 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
     }
   }
 
-  const handleBiometricLoginSetupDialogNegativeAction = () => {
-    AsyncStorage.setItem(USER_PREFERENCES.doNotShowBiometricAuthSetupDialog, 'true').then(() => {
-      setBioLoginDialogVisible(false)
-      handleSuccessfulLogin()
-    })
-  }
-
-  const handleBiometricLoginSetupDialogPositiveAction = () => {
-    setBioLoginDialogVisible(false)
-    LocalAuthentication.authenticateAsync().then((result) => {
-      if (result.success) {
-        Promise.all([
-          SecureStore.setItemAsync(USER_PREFERENCES.username, phonePrefix + phoneNumber),
-          SecureStore.setItemAsync(USER_PREFERENCES.password, password),
-          AsyncStorage.setItem(USER_PREFERENCES.biometricAuthSetUp, 'true'),
-        ]).then(() => handleSuccessfulLogin())
-      } else {
-        handleFailedLogin(result.error)
-      }
-    })
-  }
-
   return (
     <ScreenTemplate>
       <Text variant='headlineMedium'>{Strings.login_title}</Text>
@@ -185,18 +164,14 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
         {Strings.login}
       </Button>
 
-      <Portal>
-        <Dialog visible={isBioLoginDialogVisible} dismissable={false}>
-          <Dialog.Title>{Strings.login_biometric_auth_dialog_title}</Dialog.Title>
-          <Dialog.Content>
-            <Text variant='bodyMedium'>{Strings.login_biometric_auth_dialog_message}</Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={handleBiometricLoginSetupDialogNegativeAction}>{Strings.no}</Button>
-            <Button onPress={handleBiometricLoginSetupDialogPositiveAction}>{Strings.yes}</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <BiometricAuthDialog
+        isVisible={isBioLoginDialogVisible}
+        username={phonePrefix + phonePrefix}
+        password={password}
+        dismissDialog={() => setBioLoginDialogVisible(false)}
+        onSuccess={handleSuccessfulLogin}
+        onFailure={handleFailedLogin}
+      />
     </ScreenTemplate>
   )
 }
