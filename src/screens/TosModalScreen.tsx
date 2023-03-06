@@ -3,7 +3,7 @@ import { ScreenTemplate } from './ScreenTemplate'
 import { ScrollView } from 'react-native'
 import { Strings } from '../i18n/Strings'
 
-export default function TosModalScreen() {
+export function TosModalScreen() {
   return (
     <ScreenTemplate>
       <ScrollView>

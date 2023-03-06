@@ -8,9 +8,7 @@ import { Strings } from '../i18n/Strings'
 import { CommonStyles } from '../themes/CommonStyles'
 import { useMemo } from 'react'
 
-export default function WelcomeScreen({
-  navigation,
-}: NativeStackScreenProps<RootStackParamList, Routes.WelcomeScreen>) {
+export function WelcomeScreen({ navigation }: NativeStackScreenProps<RootStackParamList, Routes.WelcomeScreen>) {
   const theme = useTheme()
   const styles = useMemo(() => createStyleSheet(theme), [theme])
 

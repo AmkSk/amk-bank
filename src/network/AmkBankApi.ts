@@ -1,6 +1,6 @@
 import { Country } from '../data/Country'
 
-export default interface AmkBankApi {
+export interface AmkBankApi {
   /**
    * Downloads list of countries that can be used as a country of residence of the user during onboarding
    */

@@ -32,7 +32,7 @@ const INTRO_PAGES: Page[] = [
   },
 ]
 
-export default function IntroScreen({ navigation }: NativeStackScreenProps<RootStackParamList, Routes.IntroScreen>) {
+export function IntroScreen({ navigation }: NativeStackScreenProps<RootStackParamList, Routes.IntroScreen>) {
   const [activePage, setActivePage] = useState(0)
   const pagerRef = useRef<PagerView>(null)
   const theme = useTheme()

@@ -1,4 +1,4 @@
-import AmkBankApi from './AmkBankApi'
+import { AmkBankApi } from './AmkBankApi'
 import { AxiosInstance } from 'axios'
 import { Country } from '../data/Country'
 

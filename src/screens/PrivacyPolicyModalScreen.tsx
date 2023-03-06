@@ -3,7 +3,7 @@ import { ScreenTemplate } from './ScreenTemplate'
 import { Strings } from '../i18n/Strings'
 import { ScrollView } from 'react-native'
 
-export default function PrivacyPolicyModalScreen() {
+export function PrivacyPolicyModalScreen() {
   return (
     <ScreenTemplate>
       <ScrollView>

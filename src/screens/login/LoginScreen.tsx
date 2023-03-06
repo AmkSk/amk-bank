@@ -16,7 +16,7 @@ import { BiometricAuthDialog } from './BiometricAuthDialog'
 
 const AUTH_RESULT_ERROR_CANCEL = 'user_cancel'
 
-export default function LoginScreen({ navigation }: NativeStackScreenProps<RootStackParamList, Routes.LoginScreen>) {
+export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackParamList, Routes.LoginScreen>) {
   const theme = useTheme()
   const styles = useMemo(() => createStyleSheet(theme), [theme])
 
