@@ -1,7 +1,7 @@
 import { Text } from 'react-native-paper'
 import { ScreenTemplate } from './ScreenTemplate'
 import { ScrollView } from 'react-native'
-import { Strings } from '../i18n/Strings'
+import { Strings } from '../i18n/strings'
 
 export function TosModalScreen() {
   return (

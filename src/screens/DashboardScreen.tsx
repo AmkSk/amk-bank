@@ -1,6 +1,5 @@
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
-import { RootStackParamList } from '../navigation/NavigationTypes'
-import { Routes } from '../navigation/Routes'
+import { RootStackParamList, Routes } from '../navigation/navigationTypes'
 import { ScreenTemplate } from './ScreenTemplate'
 import { Text } from 'react-native-paper'
 

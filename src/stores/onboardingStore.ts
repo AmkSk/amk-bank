@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Country } from '../data/Country'
+import { Country } from '../data/types'
 
 interface OnboardingState {
   phonePrefix: string

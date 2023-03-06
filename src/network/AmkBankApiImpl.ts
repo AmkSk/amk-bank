@@ -1,6 +1,6 @@
 import { AmkBankApi } from './AmkBankApi'
 import { AxiosInstance } from 'axios'
-import { Country } from '../data/Country'
+import { Country } from '../data/types'
 
 export class AmkBankApiImpl implements AmkBankApi {
   axiosClient: AxiosInstance

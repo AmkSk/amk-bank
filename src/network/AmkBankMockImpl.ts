@@ -1,5 +1,5 @@
 import { AmkBankApi } from './AmkBankApi'
-import { Country } from '../data/Country'
+import { Country } from '../data/types'
 
 const REQUEST_DELAY = 1500
 

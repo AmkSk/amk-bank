@@ -1,6 +1,6 @@
 import { Text } from 'react-native-paper'
 import { ScreenTemplate } from './ScreenTemplate'
-import { Strings } from '../i18n/Strings'
+import { Strings } from '../i18n/strings'
 import { ScrollView } from 'react-native'
 
 export function PrivacyPolicyModalScreen() {

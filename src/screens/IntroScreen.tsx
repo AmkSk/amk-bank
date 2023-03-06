@@ -2,13 +2,12 @@ import { Image, ImageSourcePropType, SafeAreaView, StyleSheet, View } from 'reac
 import { Button, MD3Theme, Text, useTheme } from 'react-native-paper'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
-import { RootStackParamList } from '../navigation/NavigationTypes'
-import { Routes } from '../navigation/Routes'
+import { RootStackParamList, Routes } from '../navigation/navigationTypes'
 import PagerView from 'react-native-pager-view'
 import { useMemo, useRef, useState } from 'react'
-import { USER_PREFERENCES } from '../Constants'
+import { USER_PREFERENCES } from '../constants'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Strings } from '../i18n/Strings'
+import { Strings } from '../i18n/strings'
 import { CommonStyles } from '../themes/CommonStyles'
 
 type Page = {

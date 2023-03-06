@@ -1,10 +1,9 @@
 import { Image, StyleSheet, View } from 'react-native'
 import { Button, MD3Theme, Text, useTheme } from 'react-native-paper'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
-import { RootStackParamList } from '../navigation/NavigationTypes'
-import { Routes } from '../navigation/Routes'
+import { RootStackParamList, Routes } from '../navigation/navigationTypes'
 import { ScreenTemplate } from './ScreenTemplate'
-import { Strings } from '../i18n/Strings'
+import { Strings } from '../i18n/strings'
 import { CommonStyles } from '../themes/CommonStyles'
 import { useMemo } from 'react'
 

@@ -1,7 +1,7 @@
 import { Button, Dialog, Portal, Text } from 'react-native-paper'
-import { Strings } from '../../i18n/Strings'
+import { Strings } from '../../i18n/strings'
 import { AsyncStorage } from 'react-native'
-import { USER_PREFERENCES } from '../../Constants'
+import { USER_PREFERENCES } from '../../constants'
 import * as LocalAuthentication from 'expo-local-authentication'
 import * as SecureStore from 'expo-secure-store'
 
