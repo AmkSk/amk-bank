@@ -4,15 +4,15 @@ import { ScreenTemplate } from '../ScreenTemplate'
 import { Button, Dialog, Portal, Text } from 'react-native-paper'
 import { Strings } from '../../i18n/strings'
 import { View } from 'react-native'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { CommonStyles } from '../../themes/CommonStyles'
 import { AmkBankApi } from '../../network/AmkBankClient'
 import { Country } from '../../data/types'
 import { PaperSelect } from 'react-native-paper-select'
 import { SelectedItem } from 'react-native-paper-select/lib/typescript/interface/paperSelect.interface'
-import { useLoadingAction } from '../../hooks/useLoadingAction'
 import { useOnboardingStore } from '../../stores/onboardingStore'
 import { CommonActions } from '@react-navigation/native'
+import { LoadingContext } from '../../hooks/useLoadingAction'
 
 export function OnboardingCountryScreen({
   navigation,
@@ -28,33 +28,46 @@ export function OnboardingCountryScreen({
   const setSelectedCountry = useOnboardingStore((state) => state.setCountryOfResidence)
   const clearStore = useOnboardingStore((state) => state.clear)
 
+  const { showLoading } = useContext(LoadingContext)
+
   useEffect(() => {
     setIsButtonEnabled(selectedCountry !== null)
   }, [selectedCountry])
 
-  const { loadingAction: getCountriesLoadingAction } = useLoadingAction(
-    AmkBankApi.getCountries()
-      .then((data) => setCountries(data))
-      .catch((reason) => console.log(reason)),
-  )
-  const { loadingAction: createUserLoadingAction } = useLoadingAction(
-    AmkBankApi.createUser(
-      phoneNumberPrefix,
-      phoneNumber,
-      email,
-      dateOfBirth?.toDateString() ?? '',
-      selectedCountry?.id ?? '',
-    ),
-  )
+  const callCreateUser = async () => {
+    try {
+      return await AmkBankApi.createUser(
+        phoneNumberPrefix,
+        phoneNumber,
+        email,
+        dateOfBirth?.toDateString() ?? '',
+        selectedCountry?.id ?? '',
+      )
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   useEffect(() => {
-    getCountriesLoadingAction()
+    const callGetCountries = async () => {
+      showLoading(true)
+      try {
+        const countries = await AmkBankApi.getCountries()
+        setCountries(countries)
+      } catch (error) {
+        console.error(error)
+      }
+      showLoading(false)
+    }
+
+    callGetCountries()
   }, [])
 
-  const handleNextPress = () => {
-    createUserLoadingAction()
-      .then(() => showSuccessDialog(true))
-      .catch((reason) => console.log(reason))
+  const handleNextPress = async () => {
+    showLoading(true)
+    await callCreateUser()
+    showLoading(false)
+    showSuccessDialog(true)
   }
 
   const onSuccessDialogConfirmed = () => {

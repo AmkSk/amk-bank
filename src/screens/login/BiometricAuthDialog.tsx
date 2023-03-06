@@ -15,26 +15,23 @@ interface Props {
 }
 
 export function BiometricAuthDialog({ isVisible, username, password, dismissDialog, onSuccess, onFailure }: Props) {
-  const handlePositiveAction = () => {
+  const handlePositiveAction = async () => {
     dismissDialog()
-    LocalAuthentication.authenticateAsync().then((result) => {
-      if (result.success) {
-        Promise.all([
-          SecureStore.setItemAsync(USER_PREFERENCES.username, username),
-          SecureStore.setItemAsync(USER_PREFERENCES.password, password),
-          AsyncStorage.setItem(USER_PREFERENCES.biometricAuthSetUp, 'true'),
-        ]).then(() => onSuccess())
-      } else {
-        onFailure(result.error)
-      }
-    })
+    const authResult = await LocalAuthentication.authenticateAsync()
+    if (authResult.success) {
+      await SecureStore.setItemAsync(USER_PREFERENCES.username, username)
+      await SecureStore.setItemAsync(USER_PREFERENCES.password, password)
+      await AsyncStorage.setItem(USER_PREFERENCES.biometricAuthSetUp, 'true')
+      onSuccess()
+    } else {
+      onFailure(authResult.error)
+    }
   }
 
-  const handleNegativeAction = () => {
-    AsyncStorage.setItem(USER_PREFERENCES.doNotShowBiometricAuthSetupDialog, 'true').then(() => {
-      dismissDialog()
-      onSuccess()
-    })
+  const handleNegativeAction = async () => {
+    await AsyncStorage.setItem(USER_PREFERENCES.doNotShowBiometricAuthSetupDialog, 'true')
+    dismissDialog()
+    onSuccess()
   }
 
   return (

@@ -9,13 +9,13 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Provider as PaperProvider } from 'react-native-paper'
 
-import { Routes, RootStackParamList } from './src/navigation/navigationTypes'
+import { RootStackParamList, Routes } from './src/navigation/navigationTypes'
 import { IntroScreen } from './src/screens/IntroScreen'
 import { LoginScreen } from './src/screens/login/LoginScreen'
 import { theme } from './src/themes/Theme'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import * as SplashScreen from 'expo-splash-screen'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { WelcomeScreen } from './src/screens/WelcomeScreen'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -40,10 +40,14 @@ export default function App() {
     Poppins_700Bold,
   })
 
-  // Skip the intro when the user already went through the Intro Screen
-  AsyncStorage.getItem(USER_PREFERENCES.userFinishedIntro).then((value) => {
-    setShouldHideIntro(value === 'true')
-  })
+  useEffect(() => {
+    const fetchIntroHidingFlag = async () => {
+      // Skip the intro when the user already went through the Intro Screen
+      const value = await AsyncStorage.getItem(USER_PREFERENCES.userFinishedIntro)
+      setShouldHideIntro(value === 'true')
+    }
+    fetchIntroHidingFlag()
+  }, [])
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded && shouldHideIntro !== null) {
