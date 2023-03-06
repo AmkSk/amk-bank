@@ -26,7 +26,7 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
   const [showPassword, setShowPassword] = useState(false)
   const [isBioAuthButtonVisible, showBioAuthButton] = useState(false)
   const [isBioLoginDialogVisible, setBioLoginDialogVisible] = useState(false)
-  const enableLoginButton = phonePrefix !== '' && phoneNumber !== '' && password !== ''
+  const isLoginButtonEnabled = phonePrefix !== '' && phoneNumber !== '' && password !== ''
 
   const { showLoading } = useContext(LoadingContext)
 
@@ -72,11 +72,11 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
     if (isBiometricAuthAvailable && isBiometricAuthSetUp !== 'true' && doNotShowBiometricAuthSetupDialog !== 'true') {
       setBioLoginDialogVisible(true)
     } else {
-      onLoginSuccessful()
+      navigateToDashboard()
     }
   }
 
-  const onLoginSuccessful = () => {
+  const navigateToDashboard = () => {
     navigation.replace(Routes.DashboardScreen)
   }
 
@@ -99,7 +99,7 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
         showLoading(false)
 
         if (success) {
-          onLoginSuccessful()
+          navigateToDashboard()
         }
       } catch {
         showErrorDialog(Strings.login_biometric_auth_error)
@@ -169,7 +169,7 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
 
       <View style={CommonStyles.flex1} />
 
-      <Button mode='contained' onPress={handleLoginButtonPress} disabled={!enableLoginButton}>
+      <Button mode='contained' onPress={handleLoginButtonPress} disabled={!isLoginButtonEnabled}>
         {Strings.login}
       </Button>
 
@@ -178,7 +178,7 @@ export default function LoginScreen({ navigation }: NativeStackScreenProps<RootS
         username={phonePrefix + phonePrefix}
         password={password}
         dismissDialog={() => setBioLoginDialogVisible(false)}
-        onSuccess={onLoginSuccessful}
+        onSuccess={navigateToDashboard}
         onFailure={showErrorDialog}
       />
     </ScreenTemplate>
