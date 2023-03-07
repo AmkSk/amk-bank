@@ -141,4 +141,9 @@ export const Strings = {
   login_biometric_auth_dialog_message: 'Do you wish to log in with biometrics in the future?',
   login_biometric_auth_error: 'Please log in with your phone number and your password',
   login_request_error: 'There was a problem when logging in. Please, try again later.',
+  dashboard_balance: 'Available balance:',
+  dashboard_send: 'Send',
+  dashboard_request: 'Request',
+  dashboard_bank: 'Bank',
+  dashboard_transactions: 'Transactions',
 }

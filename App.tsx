@@ -78,7 +78,11 @@ export default function App() {
                   )}
                   <RootStack.Screen name={Routes.WelcomeScreen} component={WelcomeScreen} options={{ title: '' }} />
                   <RootStack.Screen name={Routes.LoginScreen} component={LoginScreen} options={{ title: '' }} />
-                  <RootStack.Screen name={Routes.DashboardScreen} component={DashboardScreen} options={{ title: '' }} />
+                  <RootStack.Screen
+                    name={Routes.DashboardScreen}
+                    component={DashboardScreen}
+                    options={{ headerShown: false }}
+                  />
                   <RootStack.Screen
                     name={Routes.OnboardingCreateAccountScreen}
                     component={OnboardingCreateAccountScreen}
