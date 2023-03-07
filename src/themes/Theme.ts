@@ -11,6 +11,8 @@ export const theme = {
     secondary: colors.yellow,
     error: colors.red,
     background: colors.white,
+    onSurface: colors.black,
+    backdrop: colors.gray,
   },
   fonts: configureFonts({ config: fontConfig }),
 }
