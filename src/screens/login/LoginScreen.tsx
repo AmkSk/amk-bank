@@ -12,6 +12,7 @@ import { RootStackParamList, Routes } from '../../navigation/navigationTypes'
 import { LoadingContext } from '../../hooks/loadingContext'
 import * as SecureStore from 'expo-secure-store'
 import { BiometricAuthDialog } from './BiometricAuthDialog'
+import { UserContext } from '../../hooks/userContext'
 
 const AUTH_RESULT_ERROR_CANCEL = 'user_cancel'
 
@@ -28,6 +29,7 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
   const isLoginButtonEnabled = phonePrefix !== '' && phoneNumber !== '' && password !== ''
 
   const { showLoading } = useContext(LoadingContext)
+  const { setUserLoggedIn } = useContext(UserContext)
 
   const phoneInput = useRef<RnTextInput>(null)
   const pwdInput = useRef<RnTextInput>(null)
@@ -76,7 +78,8 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
   }
 
   const navigateToDashboard = () => {
-    navigation.replace(Routes.DashboardScreen)
+    setUserLoggedIn(true)
+    navigation.replace(Routes.TabNavigator)
   }
 
   const showErrorDialog = (error?: string) => {

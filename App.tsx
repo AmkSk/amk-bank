@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { USER_PREFERENCES } from './src/constants'
 import { LoadingContextProvider } from './src/hooks/loadingContext'
 import { RootStackNavigator } from './src/navigation/RootStackNavigator'
+import { UserContextProvider } from './src/hooks/userContext'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -53,7 +54,9 @@ export default function App() {
         <PaperProvider theme={theme}>
           <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
             <LoadingContextProvider>
-              <RootStackNavigator shouldHideIntroScreens={shouldHideIntro} />
+              <UserContextProvider>
+                <RootStackNavigator shouldHideIntroScreens={shouldHideIntro} />
+              </UserContextProvider>
             </LoadingContextProvider>
           </View>
         </PaperProvider>
