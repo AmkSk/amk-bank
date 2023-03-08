@@ -1,14 +1,14 @@
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
-import { RootStackParamList, Routes } from '../navigation/navigationTypes'
+import { Routes, TabParamList } from '../../navigation/navigationTypes'
 import { IconButton, MD3Theme, Text, TouchableRipple, useTheme } from 'react-native-paper'
 import { StatusBar, StyleSheet, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Strings } from '../i18n/strings'
-import { colors } from '../themes/Colors'
-import { TRANSACTIONS } from '../data/types'
-import { TransactionList } from '../components/TransactionList'
+import { Strings } from '../../i18n/strings'
+import { colors } from '../../themes/Colors'
+import { TRANSACTIONS } from '../../data/types'
+import { TransactionList } from '../../components/TransactionList'
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs'
 
-export function DashboardScreen({ navigation }: NativeStackScreenProps<RootStackParamList, Routes.DashboardScreen>) {
+export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamList, Routes.DashboardScreen>) {
   const theme = useTheme()
   const styles = createStyleSheet(theme)
 

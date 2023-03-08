@@ -10,7 +10,11 @@ export enum Routes {
   OnboardingPersonalInfoScreen = 'OnboardingPersonalInfoScreen',
   OnboardingCountryScreen = 'OnboardingCountryScreen',
   // Authenticated Screens
+  TabNavigator = 'TabNavigator',
   DashboardScreen = 'DashboardScreen',
+  AnalyticsScreen = 'AnalyticsScreen',
+  SettingsScreen = 'SettingsScreen',
+  SupportScreen = 'SupportScreen',
 }
 
 export type RootStackParamList = {
@@ -24,6 +28,14 @@ export type RootStackParamList = {
   [Routes.OnboardingEmailScreen]: undefined
   [Routes.OnboardingPersonalInfoScreen]: undefined
   [Routes.OnboardingCountryScreen]: undefined
+  // Authenticated Screens in BottomTab
+  [Routes.TabNavigator]: undefined
+}
+
+export type TabParamList = {
   // Authenticated Screens
   [Routes.DashboardScreen]: undefined
+  [Routes.AnalyticsScreen]: undefined
+  [Routes.SettingsScreen]: undefined
+  [Routes.SupportScreen]: undefined
 }
