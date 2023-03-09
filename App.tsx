@@ -17,6 +17,8 @@ import { USER_PREFERENCES } from './src/constants'
 import { LoadingContextProvider } from './src/hooks/loadingContext'
 import { RootStackNavigator } from './src/navigation/RootStackNavigator'
 import { UserContextProvider } from './src/hooks/userContext'
+import { useErrorStore } from './src/stores/errorStore'
+import { ErrorSnackbar } from './src/components/ErrorSnackbar'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -28,6 +30,10 @@ export default function App() {
     Poppins_600SemiBold,
     Poppins_700Bold,
   })
+
+  const errorVisible = useErrorStore((state) => state.errorVisible)
+  const errorMessage = useErrorStore((state) => state.errorMessage)
+  const setErrorVisible = useErrorStore((state) => state.setErrorVisible)
 
   useEffect(() => {
     const fetchIntroHidingFlag = async () => {
@@ -56,6 +62,7 @@ export default function App() {
             <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
               <UserContextProvider>
                 <RootStackNavigator shouldHideIntroScreens={shouldHideIntro} />
+                <ErrorSnackbar visible={errorVisible} setVisible={setErrorVisible} message={errorMessage} />
               </UserContextProvider>
             </View>
           </NavigationContainer>
