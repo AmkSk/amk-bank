@@ -43,4 +43,9 @@ export class AmkBankApiImpl implements AmkBankApi {
     const response = await this.axiosClient.get<Transaction[]>('/getTransactions')
     return response.data
   }
+
+  async getAvailableBalance(): Promise<number> {
+    const response = await this.axiosClient.get<number>('/getAvailableBalance')
+    return response.data
+  }
 }

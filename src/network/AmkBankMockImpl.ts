@@ -37,6 +37,11 @@ export class AmkBankMockImpl implements AmkBankApi {
     return Promise.resolve(TRANSACTIONS)
   }
 
+  async getAvailableBalance(): Promise<number> {
+    await this.delay(REQUEST_DELAY)
+    return Promise.resolve(20000)
+  }
+
   delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 }
 

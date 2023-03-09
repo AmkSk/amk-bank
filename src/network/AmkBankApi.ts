@@ -28,4 +28,9 @@ export interface AmkBankApi {
    * Fetches transactions of the user
    */
   getTransactions(): Promise<Transaction[]>
+
+  /**
+   * Gets the avialable balance of the user as a number
+   */
+  getAvailableBalance(): Promise<number>
 }
