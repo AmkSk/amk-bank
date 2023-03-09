@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { StatusBar, StyleSheet, View } from 'react-native'
 import { ActivityIndicator, IconButton, MD3Theme, Text, TouchableRipple, useTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
-
 import { TransactionList } from '../../components/TransactionList'
 import { Strings } from '../../i18n/strings'
 import { Routes, TabParamList } from '../../navigation/navigationTypes'
@@ -16,6 +15,7 @@ export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamLis
   const theme = useTheme()
   const styles = createStyleSheet(theme)
   const [isBalanceLoading, setBalanceLoading] = useState(false)
+  const [isTransactionListLoading, setTransactionsLoading] = useState(false)
 
   const setAvailableBalance = useUserDataStore((state) => state.setAvailableBalance)
   const setTransactions = useUserDataStore((state) => state.setTransactions)
@@ -43,11 +43,14 @@ export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamLis
   useEffect(() => {
     const callGetTransactions = async () => {
       try {
+        setTransactionsLoading(true)
         const transactions = await AmkBankApi.getTransactions()
         setTransactions(transactions)
       } catch (e) {
         setTransactions([])
         console.error(e)
+      } finally {
+        setTransactionsLoading(false)
       }
     }
     callGetTransactions()
@@ -112,7 +115,7 @@ export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamLis
       </Text>
 
       <View style={styles.transactions}>
-        <TransactionList data={transactions.slice(0, 6)} />
+        <TransactionList isLoading={isTransactionListLoading} data={transactions.slice(0, 6)} />
       </View>
     </View>
   )
