@@ -62,7 +62,7 @@ export function TabNavigator() {
 
 interface TabBarIconProps {
   color: string
-  name: any
+  name: keyof (typeof Icons)['glyphMap']
 }
 
 function TabBarIcon({ color, name }: TabBarIconProps) {
