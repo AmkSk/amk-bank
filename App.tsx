@@ -49,18 +49,18 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <SafeAreaProvider>
-        <PaperProvider theme={theme}>
-          <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-            <LoadingContextProvider>
+    <SafeAreaProvider>
+      <LoadingContextProvider>
+        <NavigationContainer>
+          <PaperProvider theme={theme}>
+            <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
               <UserContextProvider>
                 <RootStackNavigator shouldHideIntroScreens={shouldHideIntro} />
               </UserContextProvider>
-            </LoadingContextProvider>
-          </View>
-        </PaperProvider>
-      </SafeAreaProvider>
-    </NavigationContainer>
+            </View>
+          </PaperProvider>
+        </NavigationContainer>
+      </LoadingContextProvider>
+    </SafeAreaProvider>
   )
 }
