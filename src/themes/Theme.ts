@@ -12,6 +12,8 @@ export const theme = {
     error: colors.red,
     background: colors.white,
     onSurface: colors.black,
+    errorContainer: colors.red,
+    onErrorContainer: colors.white,
   },
   fonts: configureFonts({ config: fontConfig }),
 }
