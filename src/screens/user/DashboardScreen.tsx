@@ -1,7 +1,7 @@
-import { IconButton, MD3Theme, Text, TouchableRipple, useTheme } from 'react-native-paper'
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs'
 import { useEffect, useState } from 'react'
 import { StatusBar, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, IconButton, MD3Theme, Text, TouchableRipple, useTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { TransactionList } from '../../components/TransactionList'
@@ -10,10 +10,12 @@ import { Routes, TabParamList } from '../../navigation/navigationTypes'
 import { useUserDataStore } from '../../stores/userDataStore'
 import { colors } from '../../themes/Colors'
 import { AmkBankApi } from '../../network/AmkBankClient'
+import { CommonStyles } from '../../themes/CommonStyles'
 
 export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamList, Routes.DashboardScreen>) {
   const theme = useTheme()
   const styles = createStyleSheet(theme)
+  const [isBalanceLoading, setBalanceLoading] = useState(false)
 
   const setAvailableBalance = useUserDataStore((state) => state.setAvailableBalance)
   const setTransactions = useUserDataStore((state) => state.setTransactions)
@@ -24,12 +26,14 @@ export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamLis
     if (availableBalance === null) {
       const callGetAvailableBalance = async () => {
         try {
+          setBalanceLoading(true)
           const balance = await AmkBankApi.getAvailableBalance()
           setAvailableBalance(balance)
         } catch (e) {
           setAvailableBalance(0)
           console.error(e)
         } finally {
+          setBalanceLoading(false)
         }
       }
       callGetAvailableBalance()
@@ -67,9 +71,14 @@ export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamLis
         <Text variant='bodyMedium' style={styles.availableBalanceText}>
           {Strings.dashboard_balance}
         </Text>
-        <Text variant='headlineMedium' style={styles.availableBalanceText}>
-          {availableBalance}
-        </Text>
+
+        {isBalanceLoading ? (
+          <ActivityIndicator color={theme.colors.onPrimary} style={CommonStyles.mt8} />
+        ) : (
+          <Text variant='headlineMedium' style={styles.availableBalanceText}>
+            {formattedBalance}
+          </Text>
+        )}
       </View>
       <View style={styles.actionButtons}>
         <TouchableRipple>
