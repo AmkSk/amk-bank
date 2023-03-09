@@ -50,17 +50,17 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <LoadingContextProvider>
-        <NavigationContainer>
-          <PaperProvider theme={theme}>
+      <PaperProvider theme={theme}>
+        <LoadingContextProvider>
+          <NavigationContainer>
             <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
               <UserContextProvider>
                 <RootStackNavigator shouldHideIntroScreens={shouldHideIntro} />
               </UserContextProvider>
             </View>
-          </PaperProvider>
-        </NavigationContainer>
-      </LoadingContextProvider>
+          </NavigationContainer>
+        </LoadingContextProvider>
+      </PaperProvider>
     </SafeAreaProvider>
   )
 }
