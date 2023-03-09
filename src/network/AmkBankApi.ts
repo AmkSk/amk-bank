@@ -1,4 +1,4 @@
-import { Country } from '../data/types'
+import { Country, Transaction } from '../data/types'
 
 export interface AmkBankApi {
   /**
@@ -23,4 +23,9 @@ export interface AmkBankApi {
    * @param passwordHash hash of a password
    */
   logIn(username: string, passwordHash: string): Promise<void>
+
+  /**
+   * Fetches transactions of the user
+   */
+  getTransactions(): Promise<Transaction[]>
 }

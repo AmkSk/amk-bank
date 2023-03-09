@@ -1,6 +1,6 @@
 import { AmkBankApi } from './AmkBankApi'
 import { AxiosInstance } from 'axios'
-import { Country } from '../data/types'
+import { Country, Transaction } from '../data/types'
 
 export class AmkBankApiImpl implements AmkBankApi {
   axiosClient: AxiosInstance
@@ -36,6 +36,11 @@ export class AmkBankApiImpl implements AmkBankApi {
       username,
       passwordHash,
     })
+    return response.data
+  }
+
+  async getTransactions(): Promise<Transaction[]> {
+    const response = await this.axiosClient.get<Transaction[]>('/getTransactions')
     return response.data
   }
 }

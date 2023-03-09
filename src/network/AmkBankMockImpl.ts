@@ -1,5 +1,5 @@
 import { AmkBankApi } from './AmkBankApi'
-import { Country } from '../data/types'
+import { Country, Transaction, TransactionType } from '../data/types'
 
 const REQUEST_DELAY = 1500
 
@@ -32,5 +32,73 @@ export class AmkBankMockImpl implements AmkBankApi {
     return Promise.resolve(undefined)
   }
 
+  async getTransactions(): Promise<Transaction[]> {
+    await this.delay(REQUEST_DELAY)
+    return Promise.resolve(TRANSACTIONS)
+  }
+
   delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 }
+
+export const TRANSACTIONS = [
+  {
+    id: 0,
+    amount: 2000.0,
+    type: TransactionType.Expense,
+    name: 'Restaurant',
+  },
+  {
+    id: 1,
+    amount: 1420.35,
+    type: TransactionType.Expense,
+    name: 'Rent',
+  },
+  {
+    id: 2,
+    amount: 80.0,
+    type: TransactionType.Income,
+    name: 'Electricity',
+  },
+  {
+    id: 3,
+    amount: 99.9,
+    type: TransactionType.Expense,
+    name: 'Gas - this is a longer input that is multiple lines long',
+  },
+  {
+    id: 4,
+    amount: 100.0,
+    type: TransactionType.Income,
+    name: 'Bills',
+  },
+  {
+    id: 5,
+    amount: 8.0,
+    type: TransactionType.Income,
+    name: 'Sent from your mother',
+  },
+  {
+    id: 6,
+    amount: 32.5,
+    type: TransactionType.Income,
+    name: 'Debt, mortgage',
+  },
+  {
+    id: 7,
+    amount: 16.3,
+    type: TransactionType.Expense,
+    name: 'Restaurant',
+  },
+  {
+    id: 8,
+    amount: 0.95,
+    type: TransactionType.Expense,
+    name: 'Restaurant',
+  },
+  {
+    id: 9,
+    amount: 100.0,
+    type: TransactionType.Expense,
+    name: 'Restaurant',
+  },
+]
