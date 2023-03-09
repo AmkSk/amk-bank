@@ -1,22 +1,60 @@
-import { Routes, TabParamList } from '../../navigation/navigationTypes'
 import { IconButton, MD3Theme, Text, TouchableRipple, useTheme } from 'react-native-paper'
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs'
+import { useEffect, useState } from 'react'
 import { StatusBar, StyleSheet, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Strings } from '../../i18n/strings'
-import { colors } from '../../themes/Colors'
-import { TRANSACTIONS } from '../../data/types'
+
 import { TransactionList } from '../../components/TransactionList'
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs'
+import { Strings } from '../../i18n/strings'
+import { Routes, TabParamList } from '../../navigation/navigationTypes'
+import { useUserDataStore } from '../../stores/userDataStore'
+import { colors } from '../../themes/Colors'
+import { AmkBankApi } from '../../network/AmkBankClient'
 
 export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamList, Routes.DashboardScreen>) {
   const theme = useTheme()
   const styles = createStyleSheet(theme)
 
-  // TODO Fetch available balance
-  const availableBalance = '$20 000.00'
+  const setAvailableBalance = useUserDataStore((state) => state.setAvailableBalance)
+  const setTransactions = useUserDataStore((state) => state.setTransactions)
+  const availableBalance = useUserDataStore((state) => state.availableBalance)
+  const transactions = useUserDataStore((state) => state.transactions)
 
-  // TODO Fetch (only four latest transactions) from store
-  const transactions = TRANSACTIONS.slice(0, 4)
+  useEffect(() => {
+    if (availableBalance === null) {
+      const callGetAvailableBalance = async () => {
+        try {
+          const balance = await AmkBankApi.getAvailableBalance()
+          setAvailableBalance(balance)
+        } catch (e) {
+          setAvailableBalance(0)
+          console.error(e)
+        } finally {
+        }
+      }
+      callGetAvailableBalance()
+    }
+  }, [])
+
+  useEffect(() => {
+    const callGetTransactions = async () => {
+      try {
+        const transactions = await AmkBankApi.getTransactions()
+        setTransactions(transactions)
+      } catch (e) {
+        setTransactions([])
+        console.error(e)
+      }
+    }
+    callGetTransactions()
+  }, [])
+
+  const formattedBalance = availableBalance?.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  })
 
   return (
     <View>
@@ -65,7 +103,7 @@ export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamLis
       </Text>
 
       <View style={styles.transactions}>
-        <TransactionList data={transactions} />
+        <TransactionList data={transactions.slice(0, 6)} />
       </View>
     </View>
   )
