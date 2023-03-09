@@ -13,6 +13,7 @@ import { SelectedItem } from 'react-native-paper-select/lib/typescript/interface
 import { useOnboardingStore } from '../../stores/onboardingStore'
 import { CommonActions } from '@react-navigation/native'
 import { LoadingContext } from '../../hooks/loadingContext'
+import { useError } from '../../hooks/useError'
 
 export function OnboardingCountryScreen({
   navigation,
@@ -29,6 +30,7 @@ export function OnboardingCountryScreen({
   const clearStore = useOnboardingStore((state) => state.clear)
 
   const { showLoading } = useContext(LoadingContext)
+  const showError = useError()
 
   useEffect(() => {
     setIsButtonEnabled(selectedCountry !== null)
@@ -40,8 +42,8 @@ export function OnboardingCountryScreen({
       try {
         const countries = await AmkBankApi.getCountries()
         setCountries(countries)
-      } catch (error) {
-        console.error(error)
+      } catch {
+        showError(Strings.onboarding_country_error)
       }
       showLoading(false)
     }
@@ -60,8 +62,8 @@ export function OnboardingCountryScreen({
         selectedCountry?.id ?? '',
       )
       showSuccessDialog(true)
-    } catch (error) {
-      console.error(error)
+    } catch {
+      showError(Strings.onboarding_create_user_error)
     }
     showLoading(false)
   }
