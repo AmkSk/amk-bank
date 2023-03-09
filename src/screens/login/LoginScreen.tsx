@@ -13,6 +13,7 @@ import { LoadingContext } from '../../hooks/loadingContext'
 import * as SecureStore from 'expo-secure-store'
 import { BiometricAuthDialog } from './BiometricAuthDialog'
 import { UserContext } from '../../hooks/userContext'
+import { useError } from '../../hooks/useError'
 
 const AUTH_RESULT_ERROR_CANCEL = 'user_cancel'
 
@@ -30,6 +31,7 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
 
   const { showLoading } = useContext(LoadingContext)
   const { setUserLoggedIn } = useContext(UserContext)
+  const setError = useError()
 
   const phoneInput = useRef<RnTextInput>(null)
   const pwdInput = useRef<RnTextInput>(null)
@@ -47,7 +49,7 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
       await AmkBankApi.logIn(username, password)
       return true
     } catch {
-      showErrorDialog(Strings.login_request_error)
+      presentError(Strings.login_request_error)
       return false
     }
   }
@@ -82,10 +84,9 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
     navigation.replace(Routes.TabNavigator)
   }
 
-  const showErrorDialog = (error?: string) => {
+  const presentError = (error?: string) => {
     if (error !== AUTH_RESULT_ERROR_CANCEL) {
-      // TODO introduce better error presentation
-      alert(`LOGIN FAILED! ${error}`)
+      setError(error ?? Strings.login_general_error)
     }
   }
 
@@ -106,10 +107,10 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
           navigateToDashboard()
         }
       } catch {
-        showErrorDialog(Strings.login_biometric_auth_error)
+        presentError(Strings.login_biometric_auth_error)
       }
     } else {
-      showErrorDialog(result.error)
+      presentError(result.error)
     }
   }
 
@@ -183,7 +184,7 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
         password={password}
         dismissDialog={() => setBioLoginDialogVisible(false)}
         onSuccess={navigateToDashboard}
-        onFailure={showErrorDialog}
+        onFailure={presentError}
       />
     </ScreenTemplate>
   )
