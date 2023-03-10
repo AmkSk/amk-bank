@@ -1,4 +1,5 @@
 export const Strings = {
+  error_general_data: 'There was an error when fetching data. Please try again.',
   button_next: 'Next',
   and: 'and',
   ok: 'OK',

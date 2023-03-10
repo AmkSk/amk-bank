@@ -10,6 +10,7 @@ import { useUserDataStore } from '../../stores/userDataStore'
 import { colors } from '../../themes/Colors'
 import { AmkBankApi } from '../../network/AmkBankClient'
 import { CommonStyles } from '../../themes/CommonStyles'
+import { useError } from '../../hooks/useError'
 
 export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamList, Routes.DashboardScreen>) {
   const theme = useTheme()
@@ -22,6 +23,8 @@ export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamLis
   const availableBalance = useUserDataStore((state) => state.availableBalance)
   const transactions = useUserDataStore((state) => state.transactions)
 
+  const showError = useError()
+
   useEffect(() => {
     if (availableBalance === null) {
       const callGetAvailableBalance = async () => {
@@ -29,9 +32,9 @@ export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamLis
           setBalanceLoading(true)
           const balance = await AmkBankApi.getAvailableBalance()
           setAvailableBalance(balance)
-        } catch (e) {
+        } catch {
           setAvailableBalance(0)
-          console.error(e)
+          showError(Strings.error_general_data)
         } finally {
           setBalanceLoading(false)
         }
@@ -48,7 +51,7 @@ export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamLis
         setTransactions(transactions)
       } catch (e) {
         setTransactions([])
-        console.error(e)
+        showError(Strings.error_general_data)
       } finally {
         setTransactionsLoading(false)
       }
