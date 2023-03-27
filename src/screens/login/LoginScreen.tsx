@@ -31,7 +31,7 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
 
   const { showLoading } = useContext(LoadingContext)
   const { setUserLoggedIn } = useContext(UserContext)
-  const setError = useError()
+  const { showError } = useError()
 
   const phoneInput = useRef<RnTextInput>(null)
   const pwdInput = useRef<RnTextInput>(null)
@@ -86,7 +86,7 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
 
   const presentError = (error?: string) => {
     if (error !== AUTH_RESULT_ERROR_CANCEL) {
-      setError(error ?? Strings.login_general_error)
+      showError(error ?? Strings.login_general_error)
     }
   }
 

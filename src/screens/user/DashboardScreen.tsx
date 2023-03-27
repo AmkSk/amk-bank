@@ -23,7 +23,7 @@ export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamLis
   const availableBalance = useUserDataStore((state) => state.availableBalance)
   const transactions = useUserDataStore((state) => state.transactions)
 
-  const showError = useError()
+  const { showError } = useError()
 
   useEffect(() => {
     if (availableBalance === null) {

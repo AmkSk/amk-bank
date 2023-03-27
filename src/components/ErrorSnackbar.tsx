@@ -2,20 +2,19 @@ import { MD3Theme, Portal, Snackbar, Text, useTheme } from 'react-native-paper'
 import { StyleSheet } from 'react-native'
 
 interface Props {
-  visible: boolean
-  setVisible: (visible: boolean) => void
-  message: string
+  errorMessage: string | null
+  setErrorMessage: (errorMessage: string | null) => void
 }
 
-export function ErrorSnackbar({ visible, setVisible, message }: Props) {
+export function ErrorSnackbar({ errorMessage, setErrorMessage }: Props) {
   const theme = useTheme()
   const styles = createStyleSheet(theme)
 
   return (
     <Portal>
-      <Snackbar visible={visible} onDismiss={() => setVisible(false)} style={styles.container}>
+      <Snackbar visible={errorMessage !== null} onDismiss={() => setErrorMessage(null)} style={styles.container}>
         <Text variant='bodyMedium' style={styles.text}>
-          {message}
+          {errorMessage}
         </Text>
       </Snackbar>
     </Portal>

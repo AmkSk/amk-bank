@@ -31,9 +31,8 @@ export default function App() {
     Poppins_700Bold,
   })
 
-  const errorVisible = useErrorStore((state) => state.errorVisible)
   const errorMessage = useErrorStore((state) => state.errorMessage)
-  const setErrorVisible = useErrorStore((state) => state.setErrorVisible)
+  const setErrorMessage = useErrorStore((state) => state.setErrorMessage)
 
   useEffect(() => {
     const fetchIntroHidingFlag = async () => {
@@ -62,7 +61,7 @@ export default function App() {
             <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
               <UserContextProvider>
                 <RootStackNavigator shouldHideIntroScreens={shouldHideIntro} />
-                <ErrorSnackbar visible={errorVisible} setVisible={setErrorVisible} message={errorMessage} />
+                <ErrorSnackbar errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
               </UserContextProvider>
             </View>
           </NavigationContainer>
