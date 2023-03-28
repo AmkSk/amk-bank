@@ -41,7 +41,7 @@ export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamLis
       }
       callGetAvailableBalance()
     }
-  }, [])
+  }, [availableBalance, setAvailableBalance, showError])
 
   useEffect(() => {
     const callGetTransactions = async () => {
@@ -49,7 +49,7 @@ export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamLis
         setTransactionsLoading(true)
         const transactions = await AmkBankApi.getTransactions()
         setTransactions(transactions)
-      } catch (e) {
+      } catch {
         setTransactions([])
         showError(Strings.error_general_data)
       } finally {
@@ -57,7 +57,7 @@ export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamLis
       }
     }
     callGetTransactions()
-  }, [])
+  }, [setTransactions, showError])
 
   const formattedBalance = availableBalance?.toLocaleString('en-US', {
     style: 'currency',

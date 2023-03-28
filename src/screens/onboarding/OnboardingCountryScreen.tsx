@@ -49,7 +49,7 @@ export function OnboardingCountryScreen({
     }
 
     callGetCountries()
-  }, [showLoading])
+  }, [showLoading, showError])
 
   const handleNextPress = async () => {
     showLoading(true)
