@@ -30,7 +30,7 @@ export function OnboardingCountryScreen({
   const clearStore = useOnboardingStore((state) => state.clear)
 
   const { showLoading } = useContext(LoadingContext)
-  const showError = useError()
+  const { showError } = useError()
 
   useEffect(() => {
     setIsButtonEnabled(selectedCountry !== null)
