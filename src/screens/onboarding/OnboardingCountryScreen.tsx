@@ -12,7 +12,7 @@ import { PaperSelect } from 'react-native-paper-select'
 import { SelectedItem } from 'react-native-paper-select/lib/typescript/interface/paperSelect.interface'
 import { useOnboardingStore } from '../../stores/onboardingStore'
 import { CommonActions } from '@react-navigation/native'
-import { LoadingContext } from '../../hooks/loadingContext'
+import { LoadingContext } from '../../context/loadingContext'
 import { useError } from '../../hooks/useError'
 
 export function OnboardingCountryScreen({

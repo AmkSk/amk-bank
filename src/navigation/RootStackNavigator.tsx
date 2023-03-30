@@ -10,7 +10,7 @@ import { OnboardingCountryScreen } from '../screens/onboarding/OnboardingCountry
 import { TosModalScreen } from '../screens/TosModalScreen'
 import { PrivacyPolicyModalScreen } from '../screens/PrivacyPolicyModalScreen'
 import { useContext } from 'react'
-import { UserContext } from '../hooks/userContext'
+import { UserContext } from '../context/userContext'
 import { TabNavigator } from './TabNavigator'
 
 interface Props {
