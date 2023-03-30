@@ -14,11 +14,12 @@ import { useOnboardingStore } from '../../stores/onboardingStore'
 import { CommonActions } from '@react-navigation/native'
 import { LoadingContext } from '../../context/loadingContext'
 import { useError } from '../../hooks/useError'
+import { useGetCountries } from './hooks/useGetCountries'
+import { LoadingModal } from '../../components/LoadingModal'
 
 export function OnboardingCountryScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, Routes.OnboardingCountryScreen>) {
-  const [countries, setCountries] = useState<Country[]>([])
   const [isButtonEnabled, setIsButtonEnabled] = useState(false)
   const [isSuccessDialogShown, showSuccessDialog] = useState(false)
   const phoneNumberPrefix = useOnboardingStore((state) => state.phonePrefix)
@@ -36,20 +37,11 @@ export function OnboardingCountryScreen({
     setIsButtonEnabled(selectedCountry !== null)
   }, [selectedCountry])
 
-  useEffect(() => {
-    const callGetCountries = async () => {
-      showLoading(true)
-      try {
-        const countries = await AmkBankApi.getCountries()
-        setCountries(countries)
-      } catch {
-        showError(Strings.onboarding_country_error)
-      }
-      showLoading(false)
-    }
+  const { countries, callGetCountries, isLoading: areCountriesLoading } = useGetCountries()
 
+  useEffect(() => {
     callGetCountries()
-  }, [showLoading, showError])
+  }, [callGetCountries])
 
   const handleNextPress = async () => {
     showLoading(true)
@@ -110,6 +102,8 @@ export function OnboardingCountryScreen({
           </Dialog.Actions>
         </Dialog>
       </Portal>
+
+      <LoadingModal visible={areCountriesLoading} />
 
       <View style={CommonStyles.flex1} />
 
