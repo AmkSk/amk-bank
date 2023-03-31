@@ -4,15 +4,15 @@ import { CommonStyles } from '../../themes/CommonStyles'
 import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Strings } from '../../i18n/strings'
 import { ScreenTemplate } from '../ScreenTemplate'
-import { AmkBankApi } from '../../network/AmkBankClient'
 import * as LocalAuthentication from 'expo-local-authentication'
 import { USER_PREFERENCES } from '../../constants'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { RootStackParamList, Routes } from '../../navigation/navigationTypes'
-import { LoadingContext } from '../../context/loadingContext'
 import * as SecureStore from 'expo-secure-store'
 import { BiometricAuthDialog } from './BiometricAuthDialog'
 import { UserContext } from '../../context/userContext'
+import { useLogin } from './hooks/useLogin'
+import { LoadingModal } from '../../components/LoadingModal'
 import { useError } from '../../hooks/useError'
 
 const AUTH_RESULT_ERROR_CANCEL = 'user_cancel'
@@ -29,7 +29,6 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
   const [isBioLoginDialogVisible, setBioLoginDialogVisible] = useState(false)
   const isLoginButtonEnabled = phonePrefix !== '' && phoneNumber !== '' && password !== ''
 
-  const { showLoading } = useContext(LoadingContext)
   const { setUserLoggedIn } = useContext(UserContext)
   const { showError } = useError()
 
@@ -44,22 +43,11 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
     fetchBioAuthSetUp()
   }, [])
 
-  const callLoginRequest = async (username: string, password: string) => {
-    try {
-      await AmkBankApi.logIn(username, password)
-      return true
-    } catch {
-      presentError(Strings.login_request_error)
-      return false
-    }
-  }
+  const { callLogin, isLoading } = useLogin()
 
   const handleLoginButtonPress = async () => {
     Keyboard.dismiss()
-    showLoading(true)
-    const success = await callLoginRequest(phonePrefix + phoneNumber, password)
-    showLoading(false)
-
+    const success = await callLogin(phonePrefix + phoneNumber, password)
     if (success) {
       await handleBiometricAuthenticationSetup()
     }
@@ -84,12 +72,6 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
     navigation.replace(Routes.TabNavigator)
   }
 
-  const presentError = (error?: string) => {
-    if (error !== AUTH_RESULT_ERROR_CANCEL) {
-      showError(error ?? Strings.login_general_error)
-    }
-  }
-
   const startBiometricLogin = async () => {
     const result = await LocalAuthentication.authenticateAsync()
     if (result.success) {
@@ -99,18 +81,18 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
           SecureStore.getItemAsync(USER_PREFERENCES.password),
         ])
 
-        showLoading(true)
-        const success = await callLoginRequest(username ?? '', password ?? '')
-        showLoading(false)
+        const success = await callLogin(username ?? '', password ?? '')
 
         if (success) {
           navigateToDashboard()
         }
       } catch {
-        presentError(Strings.login_biometric_auth_error)
+        showError(Strings.login_biometric_auth_error)
       }
     } else {
-      presentError(result.error)
+      if (result.error !== AUTH_RESULT_ERROR_CANCEL) {
+        showError(result.error)
+      }
     }
   }
 
@@ -178,13 +160,15 @@ export function LoginScreen({ navigation }: NativeStackScreenProps<RootStackPara
         {Strings.login}
       </Button>
 
+      <LoadingModal visible={isLoading} />
+
       <BiometricAuthDialog
         isVisible={isBioLoginDialogVisible}
         username={phonePrefix + phonePrefix}
         password={password}
         dismissDialog={() => setBioLoginDialogVisible(false)}
         onSuccess={navigateToDashboard}
-        onFailure={presentError}
+        onFailure={showError}
       />
     </ScreenTemplate>
   )
