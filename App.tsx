@@ -14,7 +14,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { USER_PREFERENCES } from './src/constants'
-import { LoadingContextProvider } from './src/context/loadingContext'
 import { RootStackNavigator } from './src/navigation/RootStackNavigator'
 import { UserContextProvider } from './src/context/userContext'
 import { useErrorStore } from './src/stores/errorStore'
@@ -56,16 +55,14 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
-        <LoadingContextProvider>
-          <NavigationContainer>
-            <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-              <UserContextProvider>
-                <RootStackNavigator shouldHideIntroScreens={shouldHideIntro} />
-                <ErrorSnackbar errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
-              </UserContextProvider>
-            </View>
-          </NavigationContainer>
-        </LoadingContextProvider>
+        <NavigationContainer>
+          <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+            <UserContextProvider>
+              <RootStackNavigator shouldHideIntroScreens={shouldHideIntro} />
+              <ErrorSnackbar errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+            </UserContextProvider>
+          </View>
+        </NavigationContainer>
       </PaperProvider>
     </SafeAreaProvider>
   )
