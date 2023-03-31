@@ -1,47 +1,28 @@
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { StatusBar, StyleSheet, View } from 'react-native'
 import { ActivityIndicator, IconButton, MD3Theme, Text, TouchableRipple, useTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TransactionList } from '../../components/TransactionList'
 import { Strings } from '../../i18n/strings'
 import { Routes, TabParamList } from '../../navigation/navigationTypes'
-import { useUserDataStore } from '../../stores/userDataStore'
 import { colors } from '../../themes/Colors'
-import { AmkBankApi } from '../../network/AmkBankClient'
 import { CommonStyles } from '../../themes/CommonStyles'
-import { useError } from '../../hooks/useError'
 import { useGetTransactions } from './hooks/useGetTransactions'
+import { useGetBalance } from './hooks/useGetBalance'
 
 export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamList, Routes.DashboardScreen>) {
   const theme = useTheme()
   const styles = createStyleSheet(theme)
-  const [isBalanceLoading, setBalanceLoading] = useState(false)
-
-  const setAvailableBalance = useUserDataStore((state) => state.setAvailableBalance)
-  const availableBalance = useUserDataStore((state) => state.availableBalance)
 
   const { transactions, callGetTransactions, isLoading: isTransactionListLoading } = useGetTransactions()
-
-  const { showError } = useError()
+  const { availableBalance, callGetAvailableBalance, isLoading: isBalanceLoading } = useGetBalance()
 
   useEffect(() => {
     if (availableBalance === null) {
-      const callGetAvailableBalance = async () => {
-        try {
-          setBalanceLoading(true)
-          const balance = await AmkBankApi.getAvailableBalance()
-          setAvailableBalance(balance)
-        } catch {
-          setAvailableBalance(0)
-          showError(Strings.error_general_data)
-        } finally {
-          setBalanceLoading(false)
-        }
-      }
       callGetAvailableBalance()
     }
-  }, [availableBalance, setAvailableBalance, showError])
+  }, [availableBalance, callGetAvailableBalance])
 
   useEffect(() => {
     callGetTransactions()
