@@ -11,17 +11,17 @@ import { colors } from '../../themes/Colors'
 import { AmkBankApi } from '../../network/AmkBankClient'
 import { CommonStyles } from '../../themes/CommonStyles'
 import { useError } from '../../hooks/useError'
+import { useGetTransactions } from './hooks/useGetTransactions'
 
 export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamList, Routes.DashboardScreen>) {
   const theme = useTheme()
   const styles = createStyleSheet(theme)
   const [isBalanceLoading, setBalanceLoading] = useState(false)
-  const [isTransactionListLoading, setTransactionsLoading] = useState(false)
 
   const setAvailableBalance = useUserDataStore((state) => state.setAvailableBalance)
-  const setTransactions = useUserDataStore((state) => state.setTransactions)
   const availableBalance = useUserDataStore((state) => state.availableBalance)
-  const transactions = useUserDataStore((state) => state.transactions)
+
+  const { transactions, callGetTransactions, isLoading: isTransactionListLoading } = useGetTransactions()
 
   const { showError } = useError()
 
@@ -44,20 +44,8 @@ export function DashboardScreen({ navigation }: BottomTabScreenProps<TabParamLis
   }, [availableBalance, setAvailableBalance, showError])
 
   useEffect(() => {
-    const callGetTransactions = async () => {
-      try {
-        setTransactionsLoading(true)
-        const transactions = await AmkBankApi.getTransactions()
-        setTransactions(transactions)
-      } catch {
-        setTransactions([])
-        showError(Strings.error_general_data)
-      } finally {
-        setTransactionsLoading(false)
-      }
-    }
     callGetTransactions()
-  }, [setTransactions, showError])
+  }, [callGetTransactions])
 
   const formattedBalance = availableBalance?.toLocaleString('en-US', {
     style: 'currency',
