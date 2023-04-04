@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { AmkBankApi } from '../../../network/AmkBankClient'
+import { api } from '../../../network/AmkBankClient'
 import { Strings } from '../../../i18n/strings'
 import { useErrorStore } from '../../../stores/errorStore'
 
@@ -10,7 +10,7 @@ export const useLogin = () => {
   const callLogin = async (username: string, password: string) => {
     try {
       setIsLoading(true)
-      await AmkBankApi.logIn(username, password)
+      await api.logIn(username, password)
       return true
     } catch {
       setError(Strings.login_request_error)

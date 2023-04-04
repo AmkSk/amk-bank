@@ -1,4 +1,4 @@
-import { AmkBankApi } from '../../../network/AmkBankClient'
+import { api } from '../../../network/AmkBankClient'
 import { Strings } from '../../../i18n/strings'
 import { useOnboardingStore } from '../../../stores/onboardingStore'
 import { useState } from 'react'
@@ -17,7 +17,7 @@ export const useCreateUser = () => {
   const callCreateUser = async () => {
     try {
       setIsLoading(true)
-      await AmkBankApi.createUser(
+      await api.createUser(
         phoneNumberPrefix,
         phoneNumber,
         email,

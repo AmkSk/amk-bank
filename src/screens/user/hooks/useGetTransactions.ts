@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { useErrorStore } from '../../../stores/errorStore'
-import { AmkBankApi } from '../../../network/AmkBankClient'
+import { api } from '../../../network/AmkBankClient'
 import { Strings } from '../../../i18n/strings'
 import { useUserDataStore } from '../../../stores/userDataStore'
 
@@ -14,7 +14,7 @@ export const useGetTransactions = () => {
   const callGetTransactions = useCallback(async () => {
     try {
       setIsLoading(true)
-      const transactions = await AmkBankApi.getTransactions()
+      const transactions = await api.getTransactions()
       setTransactions(transactions)
     } catch {
       setTransactions([])

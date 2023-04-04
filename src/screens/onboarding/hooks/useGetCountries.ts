@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { AmkBankApi } from '../../../network/AmkBankClient'
+import { api } from '../../../network/AmkBankClient'
 import { Strings } from '../../../i18n/strings'
 import { Country } from '../../../data/types'
 import { useErrorStore } from '../../../stores/errorStore'
@@ -12,11 +12,10 @@ export const useGetCountries = () => {
   const callGetCountries = useCallback(async () => {
     try {
       setIsLoading(true)
-      const countries = await AmkBankApi.getCountries()
+      const countries = await api.getCountries()
       setCountries(countries)
     } catch {
       setError(Strings.onboarding_country_error)
-      return []
     } finally {
       setIsLoading(false)
     }
