@@ -88,7 +88,7 @@ export function OnboardingCountryScreen({
 
       <View style={CommonStyles.flex1} />
 
-      <Button mode='contained' onPress={handleNextPress} disabled={!isButtonEnabled}>
+      <Button mode='contained' onPress={handleNextPress} disabled={!isButtonEnabled} testID='onboarding_country_button'>
         {Strings.button_next}
       </Button>
     </ScreenTemplate>
