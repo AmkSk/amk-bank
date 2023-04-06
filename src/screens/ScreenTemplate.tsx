@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { SafeAreaView, StyleSheet, View, ViewStyle } from 'react-native'
 import { CommonStyles } from '../themes/CommonStyles'
 import { MD3Theme, useTheme } from 'react-native-paper'
+import { useDeviceInfoStore } from '../stores/deviceInfoStore'
 
 interface Props {
   style?: ViewStyle
@@ -17,7 +18,8 @@ interface Props {
  */
 export function ScreenTemplate({ style, children }: Props) {
   const theme = useTheme()
-  const styles = useMemo(() => createStyleSheet(theme), [theme])
+  const isTablet = useDeviceInfoStore((state) => state.isTablet)
+  const styles = useMemo(() => createStyleSheet(theme, isTablet), [theme, isTablet])
 
   return (
     <SafeAreaView style={[CommonStyles.flex1, styles.container]}>
@@ -26,13 +28,17 @@ export function ScreenTemplate({ style, children }: Props) {
   )
 }
 
-const createStyleSheet = (theme: MD3Theme) => {
+const createStyleSheet = (theme: MD3Theme, isTablet: boolean) => {
+  const contentWidth = isTablet ? '60%' : '100%'
+
   return StyleSheet.create({
     container: {
       width: '100%',
       backgroundColor: theme.colors.background,
     },
     content: {
+      width: contentWidth,
+      alignSelf: 'center',
       margin: 16,
     },
   })
