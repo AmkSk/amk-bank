@@ -18,6 +18,9 @@ import { RootStackNavigator } from './src/navigation/RootStackNavigator'
 import { UserContextProvider } from './src/context/userContext'
 import { useErrorStore } from './src/stores/errorStore'
 import { ErrorSnackbar } from './src/components/ErrorSnackbar'
+import { useDeviceInfoStore } from './src/stores/deviceInfoStore'
+import * as Device from 'expo-device'
+import { DeviceType } from 'expo-device'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -32,6 +35,12 @@ export default function App() {
 
   const errorMessage = useErrorStore((state) => state.errorMessage)
   const setErrorMessage = useErrorStore((state) => state.setErrorMessage)
+
+  // Storing flag whether device is a tablet
+  const setIsTablet = useDeviceInfoStore((state) => state.setIsTablet)
+  Device.getDeviceTypeAsync().then((deviceType) => {
+    setIsTablet(deviceType === DeviceType.TABLET)
+  })
 
   useEffect(() => {
     const fetchIntroHidingFlag = async () => {
