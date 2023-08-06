@@ -1,2 +1,2 @@
-# amk-bank
-Synthetic project for learning Expo and React Native in VacuumLabs
+# Amk Bank
+A mock neo-banking app in React Native (Expo) containing Onboarding, Login (biometric), Cards and Dashboard features
