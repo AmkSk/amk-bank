@@ -1,2 +1,2 @@
 # Amk Bank
-A mock neo-banking app in React Native (Expo) containing Onboarding, Login (biometric), Cards and Dashboard features
+A neo-banking app in React Native (Expo) containing Onboarding, Login (biometric), Cards and Dashboard features
